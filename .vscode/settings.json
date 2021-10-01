@@ -9,7 +9,6 @@
   "eslint.alwaysShowStatus": true,
   "files.autoSave": "onFocusChange",
 
-  // prisma auto formatting
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   }
