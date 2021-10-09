@@ -9,3 +9,115 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model MainCategory {
+  id            Int           @id @default(autoincrement())
+  name          String
+  subCategories SubCategory[]
+
+  @@map("main_categories")
+}
+
+model SubCategory {
+  id             Int       @id @default(autoincrement())
+  name           String
+  mainCategoryId Int       @map("main_category_id")
+  products       Product[]
+
+  MainCategory MainCategory @relation(fields: [mainCategoryId], references: [id])
+  @@map("sub_categories")
+}
+
+model ProductionInform {
+  id           Int       @id @default(autoincrement())
+  origin       String
+  manufacturer String
+  brand        String
+  shippingFee  Int       @map("shipping_fee")
+  products     Product[]
+
+  @@map("production_informs")
+}
+
+model Product {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  price               Int
+  point               Int
+  quantity            Int
+  thumbnailUrl        String    @map("thumbnail_url") @db.VarChar(2000)
+  descriptionImageUrl String    @map("description_image_url") @db.VarChar(2000)
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime? @map("updated_at")
+  subCategoryId       Int       @map("sub_category_id")
+  productionInformId  Int       @map("production_inform_id")
+
+
+  productOptions   ProductOption[]
+  productImages    ProductImage[]
+  reviews          Review[]
+  SubCategory      SubCategory      @relation(fields: [subCategoryId], references: [id])
+  ProductionInform ProductionInform @relation(fields: [productionInformId], references: [id])
+  @@map("products")
+}
+
+model ProductOption {
+  id        Int    @id @default(autoincrement())
+  name      String
+  quantity  Int
+  productId Int    @map("product_id")
+
+  Product Product @relation(fields: [productId], references: [id])
+  @@map("product_options")
+}
+
+model ProductImage {
+  id        Int    @id @default(autoincrement())
+  imageUrl  String @map("image_url") @db.VarChar(2000)
+  productId Int    @map("product_id")
+
+  Product Product @relation(fields: [productId], references: [id])
+  @@map("product_images")
+}
+
+model User {
+  id                     Int       @id @default(autoincrement())
+  realName               String    @map("real_name")
+  username               String
+  password               String
+  email                  String
+  phoneNumber            String    @map("phone_number")
+  isAgreedServicePolicy  Boolean   @map("is_agreed_service_policy")
+  isAgreedCollectPrivate Boolean   @map("is_agreed_collect_private")
+  isAgreedPhoneMarketing Boolean   @default(false) @map("is_agreed_phone_marketing")
+  isAgreedEmailMarketing Boolean   @default(false) @map("is_agreed_email_marketing")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime? @map("updated_at")
+
+  reviews Review[]
+  @@map("users")
+}
+
+model Review {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  productId Int       @map("product_id")
+  rating    Int
+  content   String    @db.VarChar(2000)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+
+  reviewImages ReviewImage[]
+  Product      Product       @relation(fields: [productId], references: [id])
+  User         User          @relation(fields: [userId], references: [id])
+  @@map("reviews")
+}
+
+model ReviewImage {
+  id       Int    @id @default(autoincrement())
+  reviewId Int    @map("review_id")
+  imageUrl String @map("image_url") @db.VarChar(2000)
+
+  Review Review @relation(fields: [reviewId], references: [id])
+  @@map("review_images")
+}
