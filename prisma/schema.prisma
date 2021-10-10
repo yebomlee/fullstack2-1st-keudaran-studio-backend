@@ -43,7 +43,7 @@ model Product {
   id                  Int       @id @default(autoincrement())
   name                String
   price               Int
-  point               Int
+  point               Decimal   @db.Decimal(3, 2)
   quantity            Int
   thumbnailUrl        String    @map("thumbnail_url") @db.VarChar(2000)
   descriptionImageUrl String    @map("description_image_url") @db.VarChar(2000)
