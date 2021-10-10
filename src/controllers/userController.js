@@ -23,7 +23,7 @@ const checkRealName = async (req, res, next) => {
     const { realName } = req.body;
     if (!realName || realName.length < 5) errorGenerator(400, 'Invalid Input');
     const isRealNameCheck = await userService.checkRealName(realName);
-    if (!isRealNameCheck) errorGenerator(409);
+    if (isRealNameCheck) errorGenerator(409);
     resMessage(201, res, 'Id Not Duplicate', realName);
   } catch (err) {
     next(err);
