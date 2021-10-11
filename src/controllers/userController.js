@@ -9,28 +9,21 @@ const resMessage = (num, res, message, data) => {
   });
 };
 
-const getAlluser = asyncWrapper(async (req, res, next) => {
+const getAlluser = asyncWrapper(async (req, res) => {
   const user = await userService.getAlluser();
   if (!user) errorGenerator(409, 'Is Not User');
   errorGenerator(404);
   resMessage(201, res, 'Is User', user);
 });
 
-const checkRealName = async (req, res, next) => {
-  try {
-    const { realName } = req.body;
-    if (!realName || realName.length < 5) errorGenerator(400, 'Invalid Input');
-    const isRealNameCheck = await userService.checkRealName(realName);
-    if (isRealNameCheck) {
-      errorGenerator(409);
-    }
-    resMessage(201, res, 'Id Not Duplicate', realName);
-  } catch (err) {
-    next(err);
-  }
-};
+const checkRealName = asyncWrapper(async (req, res) => {
+  const { realName } = req.body;
+  if (!realName || realName.length < 5) errorGenerator(400, 'INVALID_INPUT');
+  await userService.checkRealName(realName);
+  resMessage(201, res, 'ID_NOT_DUPLICATE', realName);
+});
 
-const checkIsNullColum = async req => {
+const checkIsNullColum = async newUser => {
   const {
     username,
     password,
@@ -38,24 +31,21 @@ const checkIsNullColum = async req => {
     phoneNumber,
     isAgreedServicePolicy,
     isAgreedCollectPrivate,
-  } = req.body;
-  if (!username) errorGenerator(400, 'Is Not Username');
-  else if (!password) errorGenerator(400, 'Is Not Password');
-  else if (!email) errorGenerator(400, 'Is Not Email');
-  else if (!phoneNumber) errorGenerator(400, 'Is Not PhoneNumber');
+  } = newUser;
+  if (!username) errorGenerator(400, 'USERNAME_DOSE_NOT_EXIST ');
+  else if (!password) errorGenerator(400, 'PASSWORD_DOSE_NOT_EXIST ');
+  else if (!email) errorGenerator(400, 'EMAIL_DOSE_NOT_EXIST');
+  else if (!phoneNumber) errorGenerator(400, 'PHONENUMBER_DOSE_NOT_EXIST');
   else if (!isAgreedServicePolicy)
-    errorGenerator(400, 'Is Not IsAgreedServicePolicy');
+    errorGenerator(400, 'ISAGREEDSERVICEPOLICY_DOSE_NOT_EXIST');
   else if (!isAgreedCollectPrivate)
-    errorGenerator(400, 'Is Not IsAgreedCollectPrivate');
-  else errorGenerator(400);
+    errorGenerator(400, 'ISAGREEDCOLLECTPRIVATE_DOSE_NOT_EXIST');
 };
 
-const clickButtonCheckSignup = async (req, res, next) => {
-  try {
-    await checkIsNullColum(req);
-  } catch (err) {
-    next(err);
-  }
-};
+const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
+  await checkIsNullColum({ ...req.body });
+  const user = await userService.createUser({ ...req.body });
+  resMessage(201, res, 'CREATE_NEW_SIGNUP', user);
+});
 
 export default { getAlluser, checkRealName, clickButtonCheckSignup };
