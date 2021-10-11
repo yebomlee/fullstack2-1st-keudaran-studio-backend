@@ -6,4 +6,17 @@ const getAlluser = async () => {
   `;
 };
 
-export default { getAlluser };
+const checkRealName = async realName => {
+  const [isRealName] = await prisma.$queryRaw`
+  SELECT 
+    id,
+    real_name
+  FROM 
+    users 
+  WHERE 
+    real_name = ${realName};
+  `;
+  return isRealName;
+};
+
+export default { getAlluser, checkRealName };
