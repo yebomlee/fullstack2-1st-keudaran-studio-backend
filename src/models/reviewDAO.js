@@ -1,27 +1,36 @@
 import prisma from '../../prisma';
+import { Prisma } from '@prisma/client';
 
-const getReviewsByRating = async (id, ea) => {
+const getReviewsByRating = async (id, limit, offset) => {
   let reviews = [];
-  const query = `LIMIT ${ea}`;
-  console.log(query);
-  reviews = ea
-    ? await prisma.$queryRaw`
-    SELECT * 
+
+  return (reviews = await prisma.$queryRaw`
+    SELECT *
     FROM reviews
     LEFT JOIN review_images
     ON reviews.id = review_images.review_id
-    WHERE reviews.product_id=${id} 
-    ORDER BY rating DESC 
-    ${query};`
-    : await prisma.$queryRaw`
-    SELECT * 
-    FROM reviews
-    LEFT JOIN review_images
-    ON reviews.id = review_images.review_id 
     WHERE reviews.product_id=${id}
-    ORDER BY rating DESC;`;
-  return reviews;
+    ORDER BY rating DESC
+    ${Prisma.sql`Limit 1`};`);
+
+  // : await prisma.$queryRaw`
+  // SELECT *
+  // FROM reviews
+  // LEFT JOIN review_images
+  // ON reviews.id = review_images.review_id
+  // WHERE reviews.product_id=${id}
+  // ORDER BY rating DESC;`;
 };
+
+// const query = '';
+
+// if (offset) {
+//   query += 'OFFSET 1';
+// }
+
+// if (limit) {
+//   query += 'LIMIT 50';
+// }
 
 const getReviews = async (id, ea) => {
   let reviews = [];
