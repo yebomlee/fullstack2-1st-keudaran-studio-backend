@@ -1,10 +1,18 @@
 import prisma from '../../prisma';
 
 const getCategories = async () => {
-  const productList = await prisma.$queryRaw`
-  select * from main_categories;
+  const getCategories = await prisma.$queryRaw`
+  SELECT * FROM main_categories;
   `;
   return getCategories;
 };
 
-export default { getCategories };
+const getSubCategories = async () => {
+  const getSubCategories = await prisma.$queryRaw`
+  SELECT *
+  FROM sub_categories;
+  `;
+  return getSubCategories;
+};
+
+export default { getCategories, getSubCategories };
