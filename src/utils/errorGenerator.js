@@ -8,9 +8,9 @@ const DEFAULT_HTTP_STATUS_MESSAGES = {
   503: 'Temporary Unavailable',
 };
 
-const errorGenerator = (num = 500, message = '') => {
-  const err = new Error(message || DEFAULT_HTTP_STATUS_MESSAGES[num]);
-  err.statusCode = num;
+const errorGenerator = (statusCode = 500, message) => {
+  const err = new Error(message || DEFAULT_HTTP_STATUS_MESSAGES[statusCode]);
+  err.statusCode = statusCode;
   throw err;
 };
 
