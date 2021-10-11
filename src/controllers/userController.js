@@ -1,6 +1,7 @@
 import { userService } from '../services';
 import { errorGenerator } from '../utils';
 import { asyncWrapper } from '../utils';
+import userCheckError from '../utils/userCheckError';
 
 const resMessage = (num, res, message, data) => {
   res.status(num).json({
@@ -11,41 +12,55 @@ const resMessage = (num, res, message, data) => {
 
 const getAlluser = asyncWrapper(async (req, res) => {
   const user = await userService.getAlluser();
-  if (!user) errorGenerator(409, 'Is Not User');
-  errorGenerator(404);
-  resMessage(201, res, 'Is User', user);
+  if (!user) errorGenerator(409, 'USERNAME_DOSEN_NOT_EXIST');
+  resMessage(201, res, 'USERNAME_EXIST', user);
 });
 
-const checkRealName = asyncWrapper(async (req, res) => {
-  const { realName } = req.body;
-  if (!realName || realName.length < 5) errorGenerator(400, 'INVALID_INPUT');
-  await userService.checkRealName(realName);
-  resMessage(201, res, 'ID_NOT_DUPLICATE', realName);
+const checkUserName = asyncWrapper(async (req, res) => {
+  const { username } = req.body;
+  username || errorGenerator(400, 'USERNAME_DOSEN_NOT_EXIST');
+  !userCheckError.usernameCheckFormat(username) ||
+    errorGenerator(400, `IS_NOT_USERNAME_FORMAT`);
+  await userService.checkUserName(username);
+  resMessage(201, res, 'ID_NOT_DUPLICATE', username);
 });
 
-const checkIsNullColum = async newUser => {
-  const {
-    username,
-    password,
-    email,
-    phoneNumber,
-    isAgreedServicePolicy,
-    isAgreedCollectPrivate,
-  } = newUser;
-  if (!username) errorGenerator(400, 'USERNAME_DOSE_NOT_EXIST ');
-  else if (!password) errorGenerator(400, 'PASSWORD_DOSE_NOT_EXIST ');
-  else if (!email) errorGenerator(400, 'EMAIL_DOSE_NOT_EXIST');
-  else if (!phoneNumber) errorGenerator(400, 'PHONENUMBER_DOSE_NOT_EXIST');
-  else if (!isAgreedServicePolicy)
-    errorGenerator(400, 'ISAGREEDSERVICEPOLICY_DOSE_NOT_EXIST');
-  else if (!isAgreedCollectPrivate)
-    errorGenerator(400, 'ISAGREEDCOLLECTPRIVATE_DOSE_NOT_EXIST');
+const checkFormatColum = async req => {
+  const requiredKeys = [
+    'realName',
+    'username',
+    'password',
+    'email',
+    'phoneNumber',
+  ];
+  requiredKeys.forEach(reqKey => {
+    !userCheckError[`${reqKey}CheckFormat`](req.body[reqKey]) ||
+      errorGenerator(400, `IS_NOT_${reqKey.toLocaleUpperCase()}_FORMAT`);
+  });
 };
 
 const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
-  await checkIsNullColum({ ...req.body });
+  await userService.checkUserName(req.body.username);
+  const requiredKeys = [
+    'realName',
+    'username',
+    'password',
+    'email',
+    'phoneNumber',
+    'isAgreedServicePolicy',
+    'isAgreedCollectPrivate',
+    'isAgreedPhoneMarketing',
+    'isAgreedEmailMarketing',
+  ];
+  for (let key of requiredKeys) {
+    if (!(key in req.body)) {
+      const keyUpper = key.toLocaleUpperCase();
+      errorGenerator(400, keyUpper + '_DOSEN_NOT_EXIST');
+    }
+  }
+  await checkFormatColum(req);
   const user = await userService.createUser({ ...req.body });
   resMessage(201, res, 'CREATE_NEW_SIGNUP', user);
 });
 
-export default { getAlluser, checkRealName, clickButtonCheckSignup };
+export default { getAlluser, checkUserName, clickButtonCheckSignup };

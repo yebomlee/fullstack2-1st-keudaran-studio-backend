@@ -1,19 +1,21 @@
 import { userDAO } from '../models';
 import { errorGenerator } from '../utils';
+import { bcrypt } from '../utils';
 
 const getAlluser = async () => {
   return await userDAO.getAlluser();
 };
 
-const checkRealName = async realName => {
-  const isRealNameCheck = await userDAO.checkRealName(realName);
-  if (!isRealNameCheck) errorGenerator(409);
+const checkUserName = async username => {
+  const isRealNameCheck = await userDAO.checkUserName(username);
+  if (isRealNameCheck) throw errorGenerator(409);
 };
 
-const createUser = async newUser => {
-  const { password } = newUser;
-  // const salt = await bcrypt.genSalt(10);
-  // const hashPassword = await bcrypt.hash(password, salt);
+const createUser = async userInfo => {
+  const { password } = userInfo;
+  const hashPassword = await bcrypt.encryptPw(password);
+  userInfo.password = hashPassword;
+  return userDAO.createUser(userInfo);
 };
 
-export default { getAlluser, checkRealName, createUser };
+export default { getAlluser, checkUserName, createUser };

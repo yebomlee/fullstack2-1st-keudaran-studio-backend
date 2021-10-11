@@ -6,41 +6,47 @@ const getAlluser = async () => {
   `;
 };
 
-const checkRealName = async realName => {
-  const [isRealName] = await prisma.$queryRaw`
+const checkUserName = async username => {
+  const [isUserName] = await prisma.$queryRaw`
   SELECT 
     id,
-    real_name
+    username
   FROM 
     users 
   WHERE 
-    real_name = ${realName};
+    username = ${username};
   `;
-  return isRealName;
+  return isUserName;
 };
 
 const findLastUser = async () => {
   const newUsers = await prisma.$queryRaw`
-    SELECT
+    SELECT 
       u.id, 
-      u.real_name,
-      u.username,
-      u.password,
-      u.email,
-      u.phone_number,
-      u.is_agreed_service_policy,
-      u.is_agreed_collect_private,
-      u.is_agreed_phone_marketing,
-      u.is_agreed_email_marketing
+      u.real_name, 
+      u.username 
     FROM 
-      users u
-    ORDER BY id DESC
+      users u 
+    ORDER BY 
+      id 
+    DESC 
     LIMIT 1;
   `;
   return newUsers;
 };
 
-const createUser = async req => {
+const createUser = async userInfo => {
+  const {
+    realName,
+    username,
+    password,
+    email,
+    phoneNumber,
+    isAgreedServicePolicy,
+    isAgreedCollectPrivate,
+    isAgreedPhoneMarketing,
+    isAgreedEmailMarketing,
+  } = userInfo;
   await prisma.$queryRaw`
       INSERT INTO 
         users (
@@ -69,4 +75,4 @@ const createUser = async req => {
   return findLastUser();
 };
 
-export default { getAlluser, checkRealName, createUser };
+export default { getAlluser, checkUserName, createUser };
