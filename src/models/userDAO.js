@@ -1,9 +1,13 @@
 import prisma from '../../prisma';
 
-const getAlluser = async () => {
-  return await prisma.$queryRaw`
-  select * from users;
-  `;
+const checkUserInfoByEmail = async email => {
+  const userInfo = await prisma.$queryRaw`
+    SELECT u.id, u.username, u.password
+    FROM users u
+    WHERE
+    u.email = ${email}`;
+
+  return userInfo;
 };
 
-export default { getAlluser };
+export default { checkUserInfoByEmail };

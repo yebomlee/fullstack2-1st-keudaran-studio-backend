@@ -20,6 +20,7 @@
     "@babel/core": "^7.15.5",
     "@babel/node": "^7.15.4",
     "@babel/preset-env": "^7.15.6",
+    "bcryptjs": "^2.4.3",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.13",

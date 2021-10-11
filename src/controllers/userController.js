@@ -1,8 +1,19 @@
 import { userService } from '../services';
 
-const getAlluser = async (req, res) => {
-  const user = await userService.getAlluser();
-  res.json(user);
+const signInUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await userService.loginUser(email, password);
+    console.log(user);
+
+    res.cookie('user', user.token);
+    res.status(201).json({ message: user.message });
+  } catch (err) {
+    const { statusCode, message } = err;
+    res.status(statusCode).json({
+      message,
+    });
+  }
 };
 
-export default { getAlluser };
+export default { signInUser };
