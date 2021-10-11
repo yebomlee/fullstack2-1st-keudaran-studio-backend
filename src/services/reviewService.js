@@ -1,15 +1,13 @@
 import { reviewDAO } from '../models';
 
-const getReviews = async (id, sort, limit, offset) => {
+const getReviews = async (id, sort, offset, limit) => {
   let reviews = [];
 
   if (sort === 'rating') {
-    reviews = await reviewDAO.getReviewsByRating(id, limit, offset);
+    reviews = await reviewDAO.getReviewsByRating(id, offset, limit);
   } else {
-    reviews = await reviewDAO.getReviews(id, limit, offset);
+    reviews = await reviewDAO.getReviews(id, offset, limit);
   }
-  // errorGenerator('400', '서비스에러');
-  console.log(reviews);
   return reviews;
 };
 
