@@ -56,13 +56,22 @@ INSERT INTO reviews VALUES (default, 2, 2, 4, '사진보다 실물이 더 귀여
 INSERT INTO reviews VALUES (default, 1, 2, 5, '졸.귀.탱', default, default);
 INSERT INTO reviews VALUES (default, 3, 2, 5, '재구매 의사 있습니다!', default, default);
 INSERT INTO reviews VALUES (default, 2, 2, 3, '두번째 샀는데 좀 질리네요 -_-', default, default);
-INSERT INTO reviews VALUES (default, 1, 2, 3, '두번째 샀는데 좀 질리네요 -_-', default, default);
-INSERT INTO reviews VALUES (default, 2, 2, 3, '두번째 샀는데 좀 질리네요 -_-', default, default);
-INSERT INTO reviews VALUES (default, 3, 2, 3, '두번째 샀는데 좀 질리네요 -_-', default, default);
+INSERT INTO reviews VALUES (default, 1, 3, 2, '최악', default, default);
+INSERT INTO reviews VALUES (default, 2, 3, 3, '굿굿', default, default);
+INSERT INTO reviews VALUES (default, 3, 3, 4, '베리 굿굿', default, default);
+
+-- review_imgages
+INSERT INTO review_images VALUES (default, 3, 'https://cdn.pixabay.com/photo/2015/06/08/15/02/pug-801826__480.jpg');
+INSERT INTO review_images VALUES (default, 4, 'https://cdn.pixabay.com/photo/2015/03/26/09/54/pug-690566__340.jpg');
+INSERT INTO review_images VALUES (default, 9, 'https://cdn.pixabay.com/photo/2015/11/17/13/13/bulldog-1047518__340.jpg');
 
 
 
---getAllReviews
-SELECT * FROM reviews 
-ORDER BY created_at DESC
-${ea && `LIMIT ${ea}`};
+--getReviews
+SELECT * 
+FROM reviews
+LEFT JOIN review_images
+ON reviews.id = review_images.review_id
+WHERE reviews.product_id=${id} 
+ORDER BY rating 
+DESC LIMIT ${ea};

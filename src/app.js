@@ -11,6 +11,7 @@ app.use(function (req, res, next) {
   res.status(404).send('Sorry cant find that!');
   next();
 });
+
 app.use((err, req, res, next) => {
   const { status, message } = err;
   console.error(err);
