@@ -1,6 +1,6 @@
 import userService from './userService';
 import reviewService from './reviewService';
 import categoryService from './categoryService';
-import poducrtService from './productService';
+import productService from './productService';
 
-export { userService, reviewService, categoryService, poducrtService };
+export { userService, reviewService, categoryService, productService };
