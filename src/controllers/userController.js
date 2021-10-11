@@ -30,4 +30,32 @@ const checkRealName = async (req, res, next) => {
   }
 };
 
-export default { getAlluser, checkRealName };
+const checkIsNullColum = async req => {
+  const {
+    username,
+    password,
+    email,
+    phoneNumber,
+    isAgreedServicePolicy,
+    isAgreedCollectPrivate,
+  } = req.body;
+  if (!username) errorGenerator(400, 'Is Not Username');
+  else if (!password) errorGenerator(400, 'Is Not Password');
+  else if (!email) errorGenerator(400, 'Is Not Email');
+  else if (!phoneNumber) errorGenerator(400, 'Is Not PhoneNumber');
+  else if (!isAgreedServicePolicy)
+    errorGenerator(400, 'Is Not IsAgreedServicePolicy');
+  else if (!isAgreedCollectPrivate)
+    errorGenerator(400, 'Is Not IsAgreedCollectPrivate');
+  else errorGenerator(400);
+};
+
+const clickButtonCheckSignup = async (req, res, next) => {
+  try {
+    await checkIsNullColum(req);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { getAlluser, checkRealName, clickButtonCheckSignup };
