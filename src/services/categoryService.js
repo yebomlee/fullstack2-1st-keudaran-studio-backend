@@ -1,19 +1,16 @@
 import { categoryDAO } from '../models';
 
 const getCategories = async () => {
-  const getCategories = await categoryDAO.getCategories();
-  const getSubCategories = await categoryDAO.getSubCategories();
+  const categories = await categoryDAO.getCategories();
+  const subCategories = await categoryDAO.getSubCategories();
 
-  for (let i = 0; i < getCategories.length; i++) {
-    getCategories[i].subCategory = [];
-    for (let j = 0; j < getSubCategories.length; j++) {
-      if (getCategories[i].id === getSubCategories[j].main_category_id) {
-        getCategories[i].subCategory.push(getSubCategories[j]);
-      }
-    }
+  for (let i = 0; i < categories.length; i++) {
+    categories[i].subCategory = [];
+    for (let j = 0; j < subCategories.length; j++)
+      if (categories[i].id === subCategories[j].main_category_id)
+        categories[i].subCategory.push(subCategories[j]);
   }
-
-  return getCategories;
+  return categories;
 };
 
 export default { getCategories };

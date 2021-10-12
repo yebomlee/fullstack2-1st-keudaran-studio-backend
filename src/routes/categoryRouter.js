@@ -1,8 +1,8 @@
 import express from 'express';
 import { categoryController } from '../controllers';
 
-const categoryRouter = express.Router();
+const router = express.Router();
 
-categoryRouter.get('/', categoryController.getCategories);
+router.get('/', categoryController.getCategories);
 
-export default categoryRouter;
+export default router;
