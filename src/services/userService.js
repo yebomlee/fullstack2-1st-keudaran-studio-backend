@@ -5,15 +5,16 @@ const getAllUser = async () => {
   return await userDAO.getAllUser();
 };
 
-const checkUserName = async username => {
-  const isRealNameCheck = await userDAO.checkUsername(username);
-  if (isRealNameCheck) errorGenerator(409);
+const checkUsername = async username => {
+  const isValidName = await userDAO.checkUsername(username);
+  if (isValidName) errorGenerator(409);
 };
 
-// const deleteUser = async id => {
-//   const isDeleteUser = await userDAO.deleteUser(id);
-//   if (isRealNameCheck) errorGenerator(409);
-// };
+const deleteUser = async id => {
+  const isUser = await userDAO.checkId(id);
+  if (isUser) await userDAO.deleteUser(id);
+  else errorGenerator(401, 'USER_IS_NOT_EXIST');
+};
 
 const createUser = async userInfo => {
   const { password } = userInfo;
@@ -39,4 +40,10 @@ const signInUser = async (email, password) => {
   }
 };
 
-export default { getAllUser, checkUserName, createUser, signInUser };
+export default {
+  getAllUser,
+  checkUsername,
+  createUser,
+  signInUser,
+  deleteUser,
+};

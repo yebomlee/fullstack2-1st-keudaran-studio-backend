@@ -3,10 +3,10 @@ import { userController } from '../controllers';
 
 const router = express.Router();
 
-router.post('/signup/id', userController.checkUserName);
-router.post('/signup', userController.clickButtonCheckSignup);
+router.delete('/signup/:id', userController.deleteUser);
+router.post('/signup/username', userController.checkUserName);
+router.post('/signup', userController.createUser);
 router.post('/signin', userController.signInUser);
-// router.delete('/signup', userController.deleteUser);
 router.get('/', userController.getAlluser);
 
 export default router;
