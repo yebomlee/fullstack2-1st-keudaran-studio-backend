@@ -11,7 +11,7 @@ const resMessage = (num, res, message, data) => {
 };
 
 const getAlluser = asyncWrapper(async (req, res) => {
-  const user = await userService.getAlluser();
+  const user = await userService.getAllUser();
   if (!user) errorGenerator(409, 'USERNAME_DOSES_NOT_EXIST');
   resMessage(201, res, 'USERNAME_EXIST', user);
 });
@@ -48,8 +48,9 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
         errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
     }
   });
-  const user = await userService.createUser({ ...req.body });
-  resMessage(201, res, 'CREATE_NEW_SIGNUP', user);
+  const { token, signupUser } = await userService.createUser({ ...req.body });
+  res.cookie('user', token);
+  resMessage(201, res, 'SIGN_IN_SUCCESS', signupUser);
 });
 
 const signInUser = asyncWrapper(async (req, res) => {

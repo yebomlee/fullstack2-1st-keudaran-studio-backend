@@ -5,13 +5,13 @@ const getAllUser = async () => {
   select * from users;`;
 };
 
-const checkUserName = async username => {
+const checkUsername = async username => {
   const [user] = await prisma.$queryRaw`
   SELECT 
     id,
     username
   FROM 
-  users 
+    users 
   WHERE 
     username = ${username};
   `;
@@ -81,7 +81,7 @@ const createUser = async userInfo => {
 
 const checkUserInfoByEmail = async email => {
   const userInfo = await prisma.$queryRaw`
-    SELECT u.password
+    SELECT u.id, u.password
     FROM users u
     WHERE
     u.email = ${email}`;
@@ -91,7 +91,7 @@ const checkUserInfoByEmail = async email => {
 
 export default {
   getAllUser,
-  checkUserName,
+  checkUsername,
   createUser,
   deleteUser,
   checkUserInfoByEmail,
