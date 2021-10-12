@@ -1,36 +1,32 @@
 import { userDAO } from '../models';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { errorGenerator, bcrypt, jwt } from '../utils';
+
+const getAllUser = async () => {
+  return await userDAO.getAllUser();
+};
+
+const checkUserName = async userName => {
+  const isUserNameCheck = await userDAO.checkUserName(userName);
+  if (isUserNameCheck) return true;
+  else return false;
+};
 
 const signInUser = async (email, password) => {
   const [userInfo] = await userDAO.checkUserInfoByEmail(email);
 
   if (!userInfo) {
-    const err = new Error();
-    err.statusCode = 401;
-    err.message = '유효하지 않은 이메일입니다.';
-
-    throw err;
+    errorGenerator(401, 'EMAIL_IS_NOT_VALID');
   }
 
-  const isValidUser = await bcrypt.compare(password, userInfo.password);
-  console.log(userInfo);
-  console.log(isValidUser);
+  const isValidUser = await bcrypt.comparePw(password, userInfo.password);
 
   if (isValidUser) {
     const { id } = userInfo;
-    const token = jwt.sign({ id }, process.env.SECRET_KEY, {
-      expiresIn: '1h',
-    });
-
-    return { message: '로그인에 성공하였습니다.', token };
+    const token = jwt.issueToken;
+    return { message: 'SIGN_IN_SUCCESS', token };
   } else {
-    const err = new Error();
-    err.statusCode = 401;
-    err.message = '비밀번호가 일치하지 않습니다.';
-
-    throw err;
+    errorGenerator(401, 'PASSWORD_DOES_NOT_MATCH');
   }
 };
 
-export default { signInUser };
+export default { getAllUser, signInUser, checkUserName };
