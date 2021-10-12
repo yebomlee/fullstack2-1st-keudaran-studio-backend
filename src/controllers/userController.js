@@ -1,7 +1,7 @@
 import { userService } from '../services';
 import { errorGenerator } from '../utils';
 import { asyncWrapper } from '../utils';
-import { CheckFormatColum } from '../utils/userCheckError';
+import { CheckFormatColumn } from '../utils/formatCheckUser';
 
 const resMessage = (num, res, message, data) => {
   res.status(num).json({
@@ -12,17 +12,17 @@ const resMessage = (num, res, message, data) => {
 
 const getAlluser = asyncWrapper(async (req, res) => {
   const user = await userService.getAlluser();
-  if (!user) errorGenerator(409, 'USERNAME_DOSEN_NOT_EXIST');
+  if (!user) errorGenerator(409, 'USERNAME_DOSES_NOT_EXIST');
   resMessage(201, res, 'USERNAME_EXIST', user);
 });
 
 const checkUserName = asyncWrapper(async (req, res) => {
   const { username } = req.body;
-  username || errorGenerator(400, 'USERNAME_DOSEN_NOT_EXIST');
-  !userCheckError.usernameCheckFormat(username) ||
+  username || errorGenerator(400, 'USERNAME_DOSES_NOT_EXIST');
+  CheckFormatColumn(username, 'username') ||
     errorGenerator(400, `IS_NOT_USERNAME_FORMAT`);
   await userService.checkUserName(username);
-  resMessage(201, res, 'ID_NOT_DUPLICATE', username);
+  resMessage(201, res, 'AVAILABLE_ID', username);
 });
 
 const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
@@ -41,10 +41,10 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
   requiredKeys.forEach((key, index) => {
     const keyUpper = key.toLocaleUpperCase();
     if (!(key in req.body)) {
-      errorGenerator(400, keyUpper + '_DOSEN_NOT_EXIST');
+      errorGenerator(400, keyUpper + '_DOSES_NOT_EXIST');
     }
     if (index < 5) {
-      !CheckFormatColum(req.body[key], key) ||
+      CheckFormatColumn(req.body[key], key) ||
         errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
     }
   });

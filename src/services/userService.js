@@ -8,7 +8,7 @@ const getAlluser = async () => {
 
 const checkUserName = async username => {
   const isRealNameCheck = await userDAO.checkUserName(username);
-  if (isRealNameCheck) throw errorGenerator(409);
+  if (isRealNameCheck) errorGenerator(409);
 };
 
 const createUser = async userInfo => {
