@@ -1,6 +1,5 @@
 import { errorGenerator, asyncWrapper } from '../utils';
 import jwt from '../utils/jwt';
-import { asyncWrapper } from '../utils';
 
 const tokenVerification = asyncWrapper(async (req, res, next) => {
   const token = req.cookies.user;
