@@ -12,64 +12,48 @@ const checkColumPattern = str => {
   };
 };
 
-const usernameCheckFormat = username => {
-  const checkPattern = checkColumPattern(username);
-  return (
-    username.length < 5 ||
-    checkPattern.space ||
-    checkPattern.special ||
-    checkPattern.korea
-  );
+const CheckFormatColum = (value, key) => {
+  const checkPattern = checkColumPattern(value);
+  if (key === 'username') {
+    return (
+      value.length < 5 ||
+      checkPattern.space ||
+      checkPattern.special ||
+      checkPattern.korea
+    );
+  } else if (key === 'email') {
+    return (
+      value.substring(value.length - 4, value.length) !== '.com' ||
+      !value.includes('@') ||
+      checkPattern.space ||
+      checkPattern.korea
+    );
+  } else if (key === 'phoneNumber') {
+    return (
+      value.substring(0, 3) !== '010' ||
+      value.length !== 11 ||
+      checkPattern.space ||
+      checkPattern.special ||
+      checkPattern.korea ||
+      checkPattern.english
+    );
+  } else if (key === 'password') {
+    return (
+      value.length < 8 ||
+      checkPattern.space ||
+      !checkPattern.special ||
+      checkPattern.korea ||
+      !checkPattern.english
+    );
+  } else if (key === 'realName') {
+    return (
+      value.length > 4 ||
+      checkPattern.space ||
+      checkPattern.special ||
+      checkPattern.number ||
+      checkPattern.english
+    );
+  }
 };
 
-const emailCheckFormat = email => {
-  const checkPattern = checkColumPattern(email);
-  return (
-    email.substring(email.length - 4, email.length) !== '.com' ||
-    !email.includes('@') ||
-    checkPattern.space ||
-    checkPattern.korea
-  );
-};
-
-const phoneNumberCheckFormat = phoneNumber => {
-  const checkPattern = checkColumPattern(phoneNumber);
-  return (
-    phoneNumber.substring(0, 3) !== '010' ||
-    phoneNumber.length !== 11 ||
-    checkPattern.space ||
-    checkPattern.special ||
-    checkPattern.korea ||
-    checkPattern.english
-  );
-};
-
-const passwordCheckFormat = password => {
-  const checkPattern = checkColumPattern(password);
-  return (
-    password.length < 8 ||
-    checkPattern.space ||
-    !checkPattern.special ||
-    checkPattern.korea ||
-    !checkPattern.english
-  );
-};
-
-const realNameCheckFormat = realName => {
-  const checkPattern = checkColumPattern(realName);
-  return (
-    realName.length > 4 ||
-    checkPattern.space ||
-    checkPattern.special ||
-    checkPattern.number ||
-    checkPattern.english
-  );
-};
-
-export default {
-  usernameCheckFormat,
-  realNameCheckFormat,
-  passwordCheckFormat,
-  phoneNumberCheckFormat,
-  emailCheckFormat,
-};
+export { CheckFormatColum };

@@ -1,7 +1,7 @@
 import { userService } from '../services';
 import { errorGenerator } from '../utils';
 import { asyncWrapper } from '../utils';
-import userCheckError from '../utils/userCheckError';
+import { CheckFormatColum } from '../utils/userCheckError';
 
 const resMessage = (num, res, message, data) => {
   res.status(num).json({
@@ -44,7 +44,7 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
       errorGenerator(400, keyUpper + '_DOSEN_NOT_EXIST');
     }
     if (index < 5) {
-      !userCheckError[`${key}CheckFormat`](req.body[key]) ||
+      !CheckFormatColum(req.body[key], key) ||
         errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
     }
   });
