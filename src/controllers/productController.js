@@ -1,3 +1,4 @@
+import { asyncWrapper } from '../utils';
 import { productService } from '../services';
 
 const getAllProducts = async (req, res) => {
@@ -41,3 +42,11 @@ export default {
   sortName,
   sortDate,
 };
+
+const getProductDetail = asyncWrapper(async (req, res) => {
+  const { id } = req.query;
+  const productDetail = await productService.getProductDetail(id);
+  res.json(productDetail);
+});
+
+export default { getProductDetail };

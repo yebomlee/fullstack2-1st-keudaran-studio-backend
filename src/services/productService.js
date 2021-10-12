@@ -1,3 +1,4 @@
+import { errorGenerator } from '../utils';
 import { productDAO } from '../models';
 
 const getAllProducts = async () => {
@@ -27,7 +28,24 @@ const sortDate = async () => {
   console.log('service');
   return date.sort((a, b) => (a.created_at > b.created_at ? -1 : 1));
 };
+
+const getProductDetail = async productId => {
+  const product = await productDAO.getProduct(productId);
+  if (!product) errorGenerator(404, 'PRODUCT_DOES_NOT_EXIST');
+  const productOption = await productDAO.getProductOptions(productId);
+  if (!productOption) errorGenerator(404, 'PRODUCT_OPTIONS_DOES_NOT_EXIST');
+  const productImage = await productDAO.getProductImages(productId);
+  if (!productImage) errorGenerator(404, 'PRODUCT_IMAGES_DOES_NOT_EXIST');
+  const productDetail = {
+    ...product,
+    productOption,
+    productImage,
+  };
+  return productDetail;
+};
+
 export default {
+  getProductDetail,
   getAllProducts,
   sortLowPrice,
   sortHighPrice,
