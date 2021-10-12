@@ -50,7 +50,7 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
   });
   const { token, signupUser } = await userService.createUser({ ...req.body });
   res.cookie('user', token);
-  resMessage(201, res, 'SIGN_IN_SUCCESS', signupUser);
+  resMessage(201, res, 'SIGN_UP_SUCCESS', signupUser);
 });
 
 const signInUser = asyncWrapper(async (req, res) => {
