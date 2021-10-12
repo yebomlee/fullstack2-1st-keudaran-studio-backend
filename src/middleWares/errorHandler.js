@@ -1,7 +1,11 @@
 const errorHandler = (err, req, res, next) => {
-  const { status, message } = err;
+  const { statusCode, message } = err;
   console.error(err);
-  res.status(status || 500).json({ message });
+
+  if (statusCode === 404) {
+  }
+
+  res.status(statusCode || 500).json({ message });
 };
 
 export default errorHandler;
