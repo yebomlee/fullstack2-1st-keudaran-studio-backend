@@ -3,14 +3,18 @@ import { reviewDAO } from '../models';
 const createReview = async newReview => {
   const { userId, productId, rating, content, imageUrl } = newReview;
 
-  const createdReview = await reviewDAO.createReview(
+  let [createdReview] = await reviewDAO.createReview(
     userId,
     productId,
     rating,
     content
   );
-  console.log(createdReview);
-  await reviewDAO.createReviewImg(imageUrl, createdReview.id);
+
+  if (imageUrl)
+    [createdReview] = await reviewDAO.createReviewImg(
+      imageUrl,
+      createdReview.id
+    );
 
   return createdReview;
 };
