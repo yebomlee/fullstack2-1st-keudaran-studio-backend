@@ -75,3 +75,17 @@ ON reviews.id = review_images.review_id
 WHERE reviews.product_id=${id} 
 ORDER BY rating 
 DESC LIMIT ${ea};
+
+
+---
+
+SELECT reviews.id, users.username, product.id, product.name, reviews.rating, reviews.content, reviews.created_at, reviews.updated_at, review_images.image_url
+    FROM reviews
+    LEFT JOIN review_images
+    ON reviews.id = review_images.review_id
+    LEFT JOIN users
+    ON reviews.user_id = users.id
+    LEFT JOIN products
+    ON reviews.
+    WHERE reviews.product_id=3;
+    ORDER BY rating DESC
