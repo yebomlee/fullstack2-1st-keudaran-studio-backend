@@ -1,4 +1,4 @@
 import errorHandler from './errorHandler';
-import tokenVerifiation from './tokenVerification';
+import tokenVerification from './tokenVerification';
 
-export { errorHandler, tokenVerifiation };
+export { errorHandler, tokenVerification };
