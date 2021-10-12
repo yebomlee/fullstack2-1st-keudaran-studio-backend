@@ -1,22 +1,19 @@
 import { productDAO } from '../models';
 import { errorGenerator } from '../utils';
 
-const getProduct = async productId => {
-  const product = productDAO.getProduct(productId);
+const getProductDetail = async productId => {
+  const product = await productDAO.getProduct(productId);
   if (!product) errorGenerator(404, 'PRODUCT_DOES_NOT_EXIST');
-  return product;
+  const productOption = await productDAO.getProductOptions(productId);
+  if (!productOption) errorGenerator(404, 'PRODUCT_OPTIONS_DOES_NOT_EXIST');
+  const productImage = await productDAO.getProductImages(productId);
+  if (!productImage) errorGenerator(404, 'PRODUCT_IMAGES_DOES_NOT_EXIST');
+  const productDetail = {
+    ...product,
+    productOption,
+    productImage,
+  };
+  return productDetail;
 };
 
-const getProductImages = async productId => {
-  const productImages = productDAO.getProductImages(productId);
-  if (!productImages) errorGenerator(404, 'PRODUCT_IMAGES_DOES_NOT_EXIST');
-  return productImages;
-};
-
-const getProductOptions = async productId => {
-  const productOptions = productDAO.getProductOptions(productId);
-  if (!productOptions) errorGenerator(404, 'PRODUCT_OPTIONS_DOES_NOT_EXIST');
-  return productOptions;
-};
-
-export default { getProduct, getProductImages, getProductOptions };
+export default { getProductDetail };
