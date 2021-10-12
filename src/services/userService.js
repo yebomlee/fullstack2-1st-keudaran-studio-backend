@@ -1,13 +1,43 @@
 import { userDAO } from '../models';
+import { errorGenerator, bcrypt, jwt } from '../utils';
 
-const getAlluser = async () => {
-  return await userDAO.getAlluser();
+const getAllUser = async () => {
+  return await userDAO.getAllUser();
 };
 
-const checkRealName = async realName => {
-  const isRealNameCheck = await userDAO.checkRealName(realName);
-  if (isRealNameCheck) return true;
-  else return false;
+const checkUserName = async username => {
+  const isRealNameCheck = await userDAO.checkUserName(username);
+  if (isRealNameCheck) errorGenerator(409);
 };
 
-export default { getAlluser, checkRealName };
+// const deleteUser = async id => {
+//   const isDeleteUser = await userDAO.deleteUser(id);
+//   if (isRealNameCheck) errorGenerator(409);
+// };
+
+const createUser = async userInfo => {
+  const { password } = userInfo;
+  const hashPassword = await bcrypt.encryptPw(password);
+  userInfo.password = hashPassword;
+  return userDAO.createUser(userInfo);
+};
+
+const signInUser = async (email, password) => {
+  const [userInfo] = await userDAO.checkUserInfoByEmail(email);
+
+  if (!userInfo) {
+    errorGenerator(401, 'EMAIL_IS_NOT_VALID');
+  }
+
+  const isValidUser = await bcrypt.comparePw(password, userInfo.password);
+
+  if (isValidUser) {
+    const { id } = userInfo;
+    const token = jwt.issueToken;
+    return { message: 'SIGN_IN_SUCCESS', token };
+  } else {
+    errorGenerator(401, 'PASSWORD_DOES_NOT_MATCH');
+  }
+};
+
+export default { getAllUser, checkUserName, createUser, signInUser };
