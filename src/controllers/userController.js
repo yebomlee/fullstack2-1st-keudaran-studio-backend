@@ -52,4 +52,17 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
   resMessage(201, res, 'CREATE_NEW_SIGNUP', user);
 });
 
-export default { getAlluser, checkUserName, clickButtonCheckSignup };
+const signInUser = asyncWrapper(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userService.signInUser(email, password);
+
+  res.cookie('user', user.token);
+  res.status(201).json({ message: user.message });
+});
+
+export default {
+  getAlluser,
+  checkUserName,
+  clickButtonCheckSignup,
+  signInUser,
+};

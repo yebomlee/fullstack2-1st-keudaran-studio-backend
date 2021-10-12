@@ -1,9 +1,8 @@
 import prisma from '../../prisma';
 
-const getAlluser = async () => {
+const getAllUser = async () => {
   return await prisma.$queryRaw`
-  select * from users;
-  `;
+  select * from users;`;
 };
 
 const checkUserName = async username => {
@@ -12,7 +11,7 @@ const checkUserName = async username => {
     id,
     username
   FROM 
-    users 
+  users 
   WHERE 
     username = ${username};
   `;
@@ -80,4 +79,20 @@ const createUser = async userInfo => {
   `;
 };
 
-export default { getAlluser, checkUserName, createUser, deleteUser };
+const checkUserInfoByEmail = async email => {
+  const userInfo = await prisma.$queryRaw`
+    SELECT u.password
+    FROM users u
+    WHERE
+    u.email = ${email}`;
+
+  return userInfo;
+};
+
+export default {
+  getAllUser,
+  checkUserName,
+  createUser,
+  deleteUser,
+  checkUserInfoByEmail,
+};
