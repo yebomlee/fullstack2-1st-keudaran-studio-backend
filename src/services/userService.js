@@ -33,7 +33,7 @@ const signInUser = async (email, password) => {
 
   if (isValidUser) {
     const { id } = userInfo;
-    const token = jwt.issueToken;
+    const token = jwt.issueToken(id);
     return { message: 'SIGN_IN_SUCCESS', token };
   } else {
     errorGenerator(401, 'PASSWORD_DOES_NOT_MATCH');
