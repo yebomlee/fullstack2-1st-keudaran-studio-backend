@@ -1,22 +1,31 @@
 import prisma from '../../prisma';
 
-const getAlluser = async () => {
+const getAllUser = async () => {
   return await prisma.$queryRaw`
-  select * from users;
-  `;
+  select * from users;`;
 };
 
-const checkRealName = async realName => {
-  const [isRealName] = await prisma.$queryRaw`
+const checkUserName = async userName => {
+  const [isUserName] = await prisma.$queryRaw`
   SELECT 
-    id,
-    real_name
+  id,
+  real_name
   FROM 
-    users 
+  users 
   WHERE 
-    real_name = ${realName};
+  real_name = ${userName};
   `;
-  return isRealName;
+  return isUserName;
 };
 
-export default { getAlluser, checkRealName };
+const checkUserInfoByEmail = async email => {
+  const userInfo = await prisma.$queryRaw`
+    SELECT u.password
+    FROM users u
+    WHERE
+    u.email = ${email}`;
+
+  return userInfo;
+};
+
+export default { getAllUser, checkUserInfoByEmail, checkUserName };

@@ -3,8 +3,9 @@ import { userController } from '../controllers';
 
 const router = express.Router();
 
-router.get('/signup/id', userController.checkRealName);
-router.get('/signup', userController.getAlluser);
-router.get('/', userController.getAlluser);
+router.post('/signin', userController.signInUser);
+router.get('/signup/id', userController.checkUserName);
+router.get('/signup', userController.getAllUser);
+router.get('/', userController.getAllUser);
 
 export default router;
