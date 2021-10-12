@@ -19,6 +19,16 @@ const checkUserName = async username => {
   return user;
 };
 
+const deleteUser = async id => {
+  await prisma.$queryRaw`
+    DELETE 
+    FROM 
+      users u 
+    WHERE 
+      id = ${id} 
+  `;
+};
+
 const createUser = async userInfo => {
   const {
     realName,
@@ -70,4 +80,4 @@ const createUser = async userInfo => {
   `;
 };
 
-export default { getAlluser, checkUserName, createUser };
+export default { getAlluser, checkUserName, createUser, deleteUser };

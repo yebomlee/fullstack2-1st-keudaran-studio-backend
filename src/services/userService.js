@@ -11,6 +11,11 @@ const checkUserName = async username => {
   if (isRealNameCheck) errorGenerator(409);
 };
 
+const deleteUser = async id => {
+  const isDeleteUser = await userDAO.deleteUser(id);
+  if (isRealNameCheck) errorGenerator(409);
+};
+
 const createUser = async userInfo => {
   const { password } = userInfo;
   const hashPassword = await bcrypt.encryptPw(password);
