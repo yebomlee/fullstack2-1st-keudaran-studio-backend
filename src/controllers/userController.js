@@ -9,25 +9,32 @@ const resMessage = (num, res, message, data) => {
   });
 };
 
-const getAlluser = asyncWrapper(async (req, res, next) => {
-  const user = await userService.getAlluser();
+const getAllUser = asyncWrapper(async (req, res, next) => {
+  const user = await userService.getAllUser();
   if (!user) errorGenerator(409, 'Is Not User');
-  errorGenerator(404);
   resMessage(201, res, 'Is User', user);
 });
 
-const checkRealName = async (req, res, next) => {
+const checkUserName = async (req, res, next) => {
   try {
-    const { realName } = req.body;
-    if (!realName || realName.length < 5) errorGenerator(400, 'Invalid Input');
-    const isRealNameCheck = await userService.checkRealName(realName);
-    if (isRealNameCheck) {
+    const { userName } = req.body;
+    if (!userName || userName.length < 5) errorGenerator(400, 'Invalid Input');
+    const isUserNameCheck = await userService.checkUserName(userName);
+    if (isUserNameCheck) {
       errorGenerator(409);
     }
-    resMessage(201, res, 'Id Not Duplicate', realName);
+    resMessage(201, res, 'Id Not Duplicate', userName);
   } catch (err) {
     next(err);
   }
 };
 
-export default { getAlluser, checkRealName };
+const signInUser = asyncWrapper(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userService.signInUser(email, password);
+
+  res.cookie('user', user.token);
+  res.status(201).json({ message: user.message });
+});
+
+export default { signInUser, getAllUser, checkUserName };

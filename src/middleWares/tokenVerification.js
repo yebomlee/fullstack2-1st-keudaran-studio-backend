@@ -1,3 +1,4 @@
+import { errorGenerator, asyncWrapper } from '../utils';
 import jwt from '../utils/jwt';
 import { asyncWrapper } from '../utils';
 
@@ -6,6 +7,8 @@ const tokenVerification = asyncWrapper(async (req, res, next) => {
   if (token) {
     const payload = await jwt.verifyToken(token);
     req.body.userId = payload.id;
+  } else {
+    errorGenerator(401, 'INVALID_TOKEN');
   }
   next();
 });
