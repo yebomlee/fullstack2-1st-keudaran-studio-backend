@@ -8,29 +8,29 @@ const getAllProducts = asyncWrapper(async (req, res) => {
   });
 });
 
-const sortLowPrice = asyncWrapper(async (req, res) => {
-  const lowPrice = await productService.sortLowPrice();
+const lowPricedProducts = asyncWrapper(async (req, res) => {
+  const lowPrice = await productService.lowPricedProducts();
   res.status(200).json({
     lowPrice: lowPrice,
   });
 });
 
-const sortHighPrice = asyncWrapper(async (req, res) => {
-  const highPrice = await productService.sortHighPrice();
+const highPricedProducts = asyncWrapper(async (req, res) => {
+  const highPrice = await productService.highPricedProducts();
   res.status(200).json({
     highPrice: highPrice,
   });
 });
 
-const sortName = asyncWrapper(async (req, res) => {
-  const name = await productService.sortName();
+const namedProducts = asyncWrapper(async (req, res) => {
+  const name = await productService.namedProducts();
   res.status(200).json({
     name: name,
   });
 });
 
-const sortDate = asyncWrapper(async (req, res) => {
-  const date = await productService.sortDate();
+const datedProducts = asyncWrapper(async (req, res) => {
+  const date = await productService.datedProducts();
   res.status(200).json({
     date: date,
   });
@@ -45,8 +45,8 @@ const getProductDetail = asyncWrapper(async (req, res) => {
 export default {
   getProductDetail,
   getAllProducts,
-  sortLowPrice,
-  sortHighPrice,
-  sortName,
-  sortDate,
+  lowPricedProducts,
+  highPricedProducts,
+  namedProducts,
+  datedProducts,
 };

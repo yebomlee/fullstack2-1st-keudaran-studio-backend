@@ -4,10 +4,10 @@ import { productController } from '../controllers';
 const router = express.Router();
 
 router.get('/all', productController.getAllProducts);
-router.get('/low', productController.sortLowPrice);
-router.get('/high', productController.sortHighPrice);
-router.get('/name', productController.sortName);
-router.get('/date', productController.sortDate);
+router.get('/low', productController.lowPricedProducts);
+router.get('/high', productController.highPricedProducts);
+router.get('/name', productController.namedProducts);
+router.get('/date', productController.datedProducts);
 router.get('/detail', productController.getProductDetail);
 
 export default router;
