@@ -5,12 +5,14 @@ const getReviewsByRating = async (id, offset, limit) => {
   let reviews = [];
 
   return (reviews = await prisma.$queryRaw`
-    SELECT *
-    FROM reviews
-    LEFT JOIN review_images
-    ON reviews.id = review_images.review_id
-    WHERE reviews.product_id=${id}
-    ORDER BY rating DESC
+  SELECT reviews.id, users.username, reviews.product_id, products.id, products.name,
+  reviews.rating, reviews.content, reviews.created_at, reviews.updated_at, review_images.image_url
+  FROM reviews
+  LEFT JOIN review_images ON reviews.id = review_images.review_id
+  LEFT JOIN users ON reviews.user_id = users.id
+  LEFT JOIN products ON reviews.product_id = products.id
+  WHERE reviews.product_id=3
+  ORDER BY rating DESC;
     ${offset ? Prisma.sql`LIMIT ${offset}, ${limit}` : Prisma.empty};`);
 };
 
