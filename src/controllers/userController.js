@@ -25,20 +25,6 @@ const checkUserName = asyncWrapper(async (req, res) => {
   resMessage(201, res, 'ID_NOT_DUPLICATE', username);
 });
 
-const checkFormatColum = async req => {
-  const requiredKeys = [
-    'realName',
-    'username',
-    'password',
-    'email',
-    'phoneNumber',
-  ];
-  requiredKeys.forEach(reqKey => {
-    !userCheckError[`${reqKey}CheckFormat`](req.body[reqKey]) ||
-      errorGenerator(400, `IS_NOT_${reqKey.toLocaleUpperCase()}_FORMAT`);
-  });
-};
-
 const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
   await userService.checkUserName(req.body.username);
   const requiredKeys = [
@@ -52,13 +38,16 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
     'isAgreedPhoneMarketing',
     'isAgreedEmailMarketing',
   ];
-  for (let key of requiredKeys) {
+  requiredKeys.forEach((key, index) => {
+    const keyUpper = key.toLocaleUpperCase();
     if (!(key in req.body)) {
-      const keyUpper = key.toLocaleUpperCase();
       errorGenerator(400, keyUpper + '_DOSEN_NOT_EXIST');
     }
-  }
-  await checkFormatColum(req);
+    if (index < 5) {
+      !userCheckError[`${key}CheckFormat`](req.body[key]) ||
+        errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
+    }
+  });
   const user = await userService.createUser({ ...req.body });
   resMessage(201, res, 'CREATE_NEW_SIGNUP', user);
 });
