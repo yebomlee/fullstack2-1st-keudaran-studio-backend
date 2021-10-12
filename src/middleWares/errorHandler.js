@@ -1,8 +1,5 @@
 const errorHandler = (err, req, res, next) => {
   const { statusCode, message } = err;
-<<<<<<< HEAD
-  console.error(err);
-=======
 
   if (err.name === 'TokenExpiredError')
     res.status(419).json({ message: 'TOKEN_EXPIRED' });
@@ -10,7 +7,6 @@ const errorHandler = (err, req, res, next) => {
     res.status(401).json({ message: 'INVALID_TOKEN' });
   console.error(err);
 
->>>>>>> main
   res.status(statusCode || 500).json({ message });
 };
 
