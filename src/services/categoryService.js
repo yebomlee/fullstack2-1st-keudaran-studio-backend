@@ -1,8 +1,12 @@
 import { categoryDAO } from '../models';
+import { errorGenerator } from '../utils';
 
 const getCategories = async () => {
   const categories = await categoryDAO.getCategories();
+  if (!categories) errorGenerator(404, 'CATEGORY_DOES_NOT_EXIST');
+
   const subCategories = await categoryDAO.getSubCategories();
+  if (!subCategories) errorGenerator(404, 'SUB_CATEGORY_DOES_NOT_EXIST');
 
   for (let i = 0; i < categories.length; i++) {
     categories[i].subCategory = [];
