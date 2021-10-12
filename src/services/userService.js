@@ -5,10 +5,21 @@ const getAllUser = async () => {
   return await userDAO.getAllUser();
 };
 
-const checkUserName = async userName => {
-  const isUserNameCheck = await userDAO.checkUserName(userName);
-  if (isUserNameCheck) return true;
-  else return false;
+const checkUserName = async username => {
+  const isRealNameCheck = await userDAO.checkUserName(username);
+  if (isRealNameCheck) errorGenerator(409);
+};
+
+// const deleteUser = async id => {
+//   const isDeleteUser = await userDAO.deleteUser(id);
+//   if (isRealNameCheck) errorGenerator(409);
+// };
+
+const createUser = async userInfo => {
+  const { password } = userInfo;
+  const hashPassword = await bcrypt.encryptPw(password);
+  userInfo.password = hashPassword;
+  return userDAO.createUser(userInfo);
 };
 
 const signInUser = async (email, password) => {
@@ -29,4 +40,4 @@ const signInUser = async (email, password) => {
   }
 };
 
-export default { getAllUser, signInUser, checkUserName };
+export default { getAllUser, checkUserName, createUser, signInUser };
