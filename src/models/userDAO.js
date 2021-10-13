@@ -7,10 +7,10 @@ const getAllUser = async () => {
 
 const checkUsername = async username => {
   const [user] = await prisma.$queryRaw`
-    SELECT  id,
-            username,
-            password
-    FROM    users
+    SELECT  u.id,
+            u.username,
+            u.password
+    FROM    users u
     WHERE   username = ${username};
   `;
   return user;
@@ -78,10 +78,10 @@ const createUser = async userInfo => {
 
 const checkUserInfoByEmail = async email => {
   const userInfo = await prisma.$queryRaw`
-    SELECT u.id, u.password
-    FROM users u
-    WHERE
-    u.email = ${email}`;
+  SELECT  u.id,
+          u.password
+  FROM    users u
+  WHERE   u.email = ${email}`;
 
   return userInfo;
 };

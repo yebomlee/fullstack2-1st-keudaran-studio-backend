@@ -17,19 +17,35 @@ const getAlluser = asyncWrapper(async (req, res) => {
 });
 
 const checkUserName = asyncWrapper(async (req, res) => {
+  const requiredKeys = ['username'];
+  const CHECK_PATTERN_RANGE = 1;
+  checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
   const { username } = req.body;
-  username || errorGenerator(400, 'USERNAME_DOSES_NOT_EXIST');
-  CheckFormatColumn(username, 'username') ||
-    errorGenerator(400, `IS_NOT_USERNAME_FORMAT`);
   await userService.checkUsername(username);
   successResMessage(201, res, 'AVAILABLE_ID', { username });
 });
 
 const deleteUser = asyncWrapper(async (req, res) => {
+  const requiredKeys = ['password', 'username'];
+  const CHECK_PATTERN_RANGE = 2;
+  checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
   const { username, password } = req.body;
   await userService.deleteUser(username, password);
   successResMessage(201, res, 'SUCCESS_DELETE_USER');
 });
+
+const checkPatternReqBody = (req, requiredKeys, CHECK_PATTERN_RANGE) => {
+  requiredKeys.forEach((key, index) => {
+    const keyUpper = key.toLocaleUpperCase();
+    if (!(key in req.body)) {
+      errorGenerator(400, keyUpper + '_DOSES_NOT_EXIST');
+    }
+    if (index < CHECK_PATTERN_RANGE) {
+      CheckFormatColumn(req.body[key], key) ||
+        errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
+    }
+  });
+};
 
 const createUser = asyncWrapper(async (req, res) => {
   await userService.checkUsername(req.body.username);
@@ -44,17 +60,8 @@ const createUser = asyncWrapper(async (req, res) => {
     'isAgreedPhoneMarketing',
     'isAgreedEmailMarketing',
   ];
-  requiredKeys.forEach((key, index) => {
-    const CHECK_PATTERN_RANGE = 5;
-    const keyUpper = key.toLocaleUpperCase();
-    if (!(key in req.body)) {
-      errorGenerator(400, keyUpper + '_DOSES_NOT_EXIST');
-    }
-    if (index < CHECK_PATTERN_RANGE) {
-      CheckFormatColumn(req.body[key], key) ||
-        errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
-    }
-  });
+  const CHECK_PATTERN_RANGE = 5;
+  checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
   const { token, signupUser } = await userService.createUser({ ...req.body });
   console.log(signupUser);
   res.cookie('user', token);

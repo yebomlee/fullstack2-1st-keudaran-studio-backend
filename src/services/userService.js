@@ -35,7 +35,7 @@ const signInUser = async (email, password) => {
   const isValidUser = await bcrypt.comparePw(password, userInfo.password);
   if (isValidUser) {
     const { id } = userInfo;
-    const token = jwt.issueToken(id);
+    const token = await jwt.issueToken(id);
     return { message: 'SIGN_IN_SUCCESS', token };
   } else {
     errorGenerator(401, 'PASSWORD_DOES_NOT_MATCH');
