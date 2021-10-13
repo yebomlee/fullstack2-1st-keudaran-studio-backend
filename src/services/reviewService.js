@@ -1,5 +1,9 @@
 import { reviewDAO } from '../models';
 
+const getReviews = async (id, sort, offset, limit) => {
+  return await reviewDAO.getReviews(id, sort, offset, limit);
+};
+
 const createReview = async newReview => {
   const { userId, productId, rating, content, imageUrl } = newReview;
 
@@ -15,8 +19,7 @@ const createReview = async newReview => {
       imageUrl,
       createdReview.id
     );
-  console.log('wow');
   return createdReview;
 };
 
-export default { createReview };
+export default { getReviews, createReview };
