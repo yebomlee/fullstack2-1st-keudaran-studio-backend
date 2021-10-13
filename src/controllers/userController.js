@@ -3,7 +3,7 @@ import { errorGenerator } from '../utils';
 import { asyncWrapper } from '../utils';
 import { CheckFormatColumn } from '../utils/formatCheckUser';
 
-const resMessage = (num, res, message, data) => {
+const successResMessage = (num, res, message, data) => {
   res.status(num).json({
     message,
     data,
@@ -11,22 +11,44 @@ const resMessage = (num, res, message, data) => {
 };
 
 const getAlluser = asyncWrapper(async (req, res) => {
-  const user = await userService.getAlluser();
+  const user = await userService.getAllUser();
   if (!user) errorGenerator(409, 'USERNAME_DOSES_NOT_EXIST');
-  resMessage(201, res, 'USERNAME_EXIST', user);
+  successResMessage(201, res, 'USERNAME_EXIST', user);
 });
 
 const checkUserName = asyncWrapper(async (req, res) => {
+  const requiredKeys = ['username'];
+  const CHECK_PATTERN_RANGE = 1;
+  checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
   const { username } = req.body;
-  username || errorGenerator(400, 'USERNAME_DOSES_NOT_EXIST');
-  CheckFormatColumn(username, 'username') ||
-    errorGenerator(400, `IS_NOT_USERNAME_FORMAT`);
-  await userService.checkUserName(username);
-  resMessage(201, res, 'AVAILABLE_ID', username);
+  await userService.checkUsername(username);
+  successResMessage(201, res, 'AVAILABLE_ID', { username });
 });
 
-const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
-  await userService.checkUserName(req.body.username);
+const deleteUser = asyncWrapper(async (req, res) => {
+  const requiredKeys = ['password', 'username'];
+  const CHECK_PATTERN_RANGE = 2;
+  checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
+  const { username, password } = req.body;
+  await userService.deleteUser(username, password);
+  successResMessage(201, res, 'SUCCESS_DELETE_USER');
+});
+
+const checkPatternReqBody = (req, requiredKeys, CHECK_PATTERN_RANGE) => {
+  requiredKeys.forEach((key, index) => {
+    const keyUpper = key.toLocaleUpperCase();
+    if (!(key in req.body)) {
+      errorGenerator(400, keyUpper + '_DOSES_NOT_EXIST');
+    }
+    if (index < CHECK_PATTERN_RANGE) {
+      CheckFormatColumn(req.body[key], key) ||
+        errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
+    }
+  });
+};
+
+const createUser = asyncWrapper(async (req, res) => {
+  await userService.checkUsername(req.body.username);
   const requiredKeys = [
     'realName',
     'username',
@@ -38,18 +60,12 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
     'isAgreedPhoneMarketing',
     'isAgreedEmailMarketing',
   ];
-  requiredKeys.forEach((key, index) => {
-    const keyUpper = key.toLocaleUpperCase();
-    if (!(key in req.body)) {
-      errorGenerator(400, keyUpper + '_DOSES_NOT_EXIST');
-    }
-    if (index < 5) {
-      CheckFormatColumn(req.body[key], key) ||
-        errorGenerator(400, `IS_NOT_${keyUpper}_FORMAT`);
-    }
-  });
-  const user = await userService.createUser({ ...req.body });
-  resMessage(201, res, 'CREATE_NEW_SIGNUP', user);
+  const CHECK_PATTERN_RANGE = 5;
+  checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
+  const { token, signupUser } = await userService.createUser({ ...req.body });
+  console.log(signupUser);
+  res.cookie('user', token);
+  successResMessage(201, res, 'SIGN_UP_SUCCESS', signupUser);
 });
 
 const signInUser = asyncWrapper(async (req, res) => {
@@ -63,6 +79,7 @@ const signInUser = asyncWrapper(async (req, res) => {
 export default {
   getAlluser,
   checkUserName,
-  clickButtonCheckSignup,
+  createUser,
   signInUser,
+  deleteUser,
 };
