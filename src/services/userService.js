@@ -10,11 +10,6 @@ const checkUserName = async username => {
   if (isRealNameCheck) errorGenerator(409);
 };
 
-// const deleteUser = async id => {
-//   const isDeleteUser = await userDAO.deleteUser(id);
-//   if (isRealNameCheck) errorGenerator(409);
-// };
-
 const createUser = async userInfo => {
   const { password } = userInfo;
   const hashPassword = await bcrypt.encryptPw(password);
@@ -33,7 +28,7 @@ const signInUser = async (email, password) => {
 
   if (isValidUser) {
     const { id } = userInfo;
-    const token = jwt.issueToken;
+    const token = await jwt.issueToken(id);
     return { message: 'SIGN_IN_SUCCESS', token };
   } else {
     errorGenerator(401, 'PASSWORD_DOES_NOT_MATCH');
