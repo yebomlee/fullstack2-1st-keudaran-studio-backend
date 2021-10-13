@@ -1,10 +1,7 @@
 import { reviewDAO } from '../models';
-import { errorGenerator } from '../utils';
 
 const createReview = async newReview => {
   const { userId, productId, rating, content, imageUrl } = newReview;
-  if (userId || productId || rating || content)
-    errorGenerator(400, 'NOT_ENOGH_INFORMATION');
 
   let [createdReview] = await reviewDAO.createReview(
     userId,
@@ -18,7 +15,7 @@ const createReview = async newReview => {
       imageUrl,
       createdReview.id
     );
-
+  console.log('wow');
   return createdReview;
 };
 
