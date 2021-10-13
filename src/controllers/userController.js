@@ -53,8 +53,8 @@ const clickButtonCheckSignup = asyncWrapper(async (req, res) => {
 });
 
 const signInUser = asyncWrapper(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userService.signInUser(email, password);
+  const { username, password } = req.body;
+  const user = await userService.signInUser(username, password);
 
   res.cookie('user', user.token);
   res.status(201).json({ message: user.message });

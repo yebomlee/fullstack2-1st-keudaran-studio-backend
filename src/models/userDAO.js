@@ -75,12 +75,13 @@ const createUser = async userInfo => {
   `;
 };
 
-const checkUserInfoByEmail = async email => {
+const checkUserInfoByEmail = async username => {
   const userInfo = await prisma.$queryRaw`
   SELECT  u.id,
+          u.username,
           u.password
   FROM    users u
-  WHERE   u.email = ${email}`;
+  WHERE   u.username = ${username}`;
 
   return userInfo;
 };

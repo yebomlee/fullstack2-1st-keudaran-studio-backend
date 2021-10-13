@@ -17,8 +17,8 @@ const createUser = async userInfo => {
   return userDAO.createUser(userInfo);
 };
 
-const signInUser = async (email, password) => {
-  const [userInfo] = await userDAO.checkUserInfoByEmail(email);
+const signInUser = async (username, password) => {
+  const [userInfo] = await userDAO.checkUserInfoByEmail(username);
 
   if (!userInfo) {
     errorGenerator(401, 'EMAIL_IS_NOT_VALID');
