@@ -14,9 +14,12 @@ const getSortedProducts = async sort => {
     p.name,
     p.price,
     p.thumbnail_url as thumbnailUrl,
-    p.description_image_url as descriptionImageUrl,
-    p.created_at as createdAt
+    p.created_at as createdAt,
+    pi.id,
+    pi.image_url as imageUrl
   FROM products p
+  JOIN product_images pi
+  ON p.id = pi.product_id
   order by ${query}
   `;
 };
