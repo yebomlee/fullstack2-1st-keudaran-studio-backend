@@ -9,42 +9,40 @@ const getSortedProducts = async sort => {
   if (sort === 'name') query = Prisma.sql`p.name`;
 
   return await prisma.$queryRaw`
-  SELECT
-    p.id,
-    p.name,
-    p.price,
-    p.thumbnail_url as thumbnailUrl,
-    p.created_at as createdAt,
-    pi.id,
-    pi.image_url as imageUrl
-  FROM products p
-  JOIN product_images pi
-  ON p.id = pi.product_id
-  order by ${query}
+  SELECT      p.id,
+              p.name,
+              p.price,
+              p.thumbnail_url as thumbnailUrl,
+              p.created_at as createdAt,
+              pi.id,
+              pi.image_url as imageUrl
+  FROM        products p
+  JOIN        product_images pi
+  ON          p.id = pi.product_id
+  order       by ${query}
   `;
 };
 
 const getAllProducts = async () => {
   return await prisma.$queryRaw`
-  SELECT
-    p.id,
-    p.name,
-    p.price,
-    p.thumbnail_url as thumbnailUrl,
-    p.description_image_url as descriptionImageUrl,
-    p.created_at as createdAt
-  FROM products p
+  SELECT  p.id,
+          p.name,
+          p.price,
+          p.thumbnail_url as thumbnailUrl,
+          p.description_image_url as descriptionImageUrl,
+          p.created_at as createdAt
+  FROM    products p
   `;
 };
 
 const getProduct = async productId => {
   const [product] = await prisma.$queryRaw`
   SELECT    p.id,
-    p.NAME,
+    p.name,
     p.price,
     p.point,
     p.quantity,
-    p.thumbnail_url as thrmbnailUrl,
+    p.thumbnail_url as thumbnailUrl,
     p.description_image_url as descriptionImageUrl,
     p.created_at as createdAt,
     p.updated_at as updatedAt,
@@ -66,9 +64,9 @@ const getProduct = async productId => {
 const getProductOptions = async productId => {
   const productOptions = await prisma.$queryRaw`
   SELECT  PO.id,
-    PO.NAME,
-    PO.quantity,
-    PO.product_id as productId
+          PO.name,
+          PO.quantity,
+          PO.product_id as productId
   FROM    product_options PO
   WHERE   product_id = ${productId}; 
   `;
@@ -77,11 +75,11 @@ const getProductOptions = async productId => {
 
 const getProductImages = async productId => {
   const productImages = await prisma.$queryRaw`
-  SELECT  PI.id,
-    PI.image_url as imageUrl,
-    PI.product_id as productId
-  FROM    product_images PI
-  WHERE   product_id = ${productId}; 
+  SELECT    PI.id,
+            PI.image_url as imageUrl,
+            PI.product_id as productId
+  FROM      product_images PI
+  WHERE     product_id = ${productId}; 
   `;
   return productImages;
 };
