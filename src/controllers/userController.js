@@ -22,12 +22,12 @@ const checkUserName = asyncWrapper(async (req, res) => {
   CheckFormatColumn(username, 'username') ||
     errorGenerator(400, `IS_NOT_USERNAME_FORMAT`);
   await userService.checkUsername(username);
-  successResMessage(201, res, 'AVAILABLE_ID', username);
+  successResMessage(201, res, 'AVAILABLE_ID', { username });
 });
 
 const deleteUser = asyncWrapper(async (req, res) => {
-  const { id } = req.params;
-  await userService.deleteUser(id);
+  const { username, password } = req.body;
+  await userService.deleteUser(username, password);
   successResMessage(201, res, 'SUCCESS_DELETE_USER');
 });
 
@@ -56,6 +56,7 @@ const createUser = asyncWrapper(async (req, res) => {
     }
   });
   const { token, signupUser } = await userService.createUser({ ...req.body });
+  console.log(signupUser);
   res.cookie('user', token);
   successResMessage(201, res, 'SIGN_UP_SUCCESS', signupUser);
 });

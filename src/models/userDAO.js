@@ -8,18 +8,10 @@ const getAllUser = async () => {
 const checkUsername = async username => {
   const [user] = await prisma.$queryRaw`
     SELECT  id,
-            username
+            username,
+            password
     FROM    users
     WHERE   username = ${username};
-  `;
-  return user;
-};
-
-const checkId = async id => {
-  const [user] = await prisma.$queryRaw`
-    SELECT  id
-    FROM    users
-    WHERE   id = ${id};
   `;
   return user;
 };
@@ -35,7 +27,7 @@ const deleteUser = async id => {
 const findLastUser = async () => {
   return await prisma.$queryRaw`
     SELECT  u.id,
-            u.real_name,
+            u.real_name as realName,
             u.username
     FROM    users u
     ORDER  BY id DESC
@@ -97,7 +89,6 @@ const checkUserInfoByEmail = async email => {
 export default {
   getAllUser,
   checkUsername,
-  checkId,
   createUser,
   deleteUser,
   checkUserInfoByEmail,

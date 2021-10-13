@@ -10,10 +10,12 @@ const checkUsername = async username => {
   if (isValidName) errorGenerator(409);
 };
 
-const deleteUser = async id => {
-  const isUser = await userDAO.checkId(id);
-  if (isUser) await userDAO.deleteUser(id);
-  else errorGenerator(401, 'USER_IS_NOT_EXIST');
+const deleteUser = async (username, password) => {
+  const user = await userDAO.checkUsername(username);
+  if (!user) errorGenerator(401, 'USER_IS_NOT_EXIST');
+  const isValidUser = await bcrypt.comparePw(password, user.password);
+  if (isValidUser) await userDAO.deleteUser(user.id);
+  else errorGenerator(401, 'PASSWORD_IS_NOT_SAME');
 };
 
 const createUser = async userInfo => {
@@ -21,7 +23,7 @@ const createUser = async userInfo => {
   const hashPassword = await bcrypt.encryptPw(password);
   userInfo.password = hashPassword;
   const signupUser = await userDAO.createUser(userInfo);
-  const token = await jwt.issueToken(signupUser.id);
+  const token = await jwt.issueToken(signupUser[0].id);
   return { token, signupUser };
 };
 
