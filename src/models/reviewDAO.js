@@ -2,28 +2,26 @@ import prisma from '../../prisma';
 import { Prisma } from '@prisma/client';
 
 const getReviews = async (id, sort, offset, limit = 10) => {
-  console.log(id, sort, offset, limit);
-
   return await prisma.$queryRaw`
-  SELECT    reviews.id,
-            users.username,
-            reviews.product_id,
-            products.id,
-            products.NAME,
-            reviews.rating,
-            reviews.content,
-            reviews.created_at,
-            reviews.updated_at,
-            review_images.image_url
-  FROM      reviews
-  LEFT JOIN review_images
-  ON        reviews.id = review_images.review_id
-  LEFT JOIN users
-  ON        reviews.user_id = users.id
-  LEFT JOIN products
-  ON        reviews.product_id = products.id
-  WHERE     reviews.product_id=${id}
-  ORDER BY  ${sort ? Prisma.sql`rating` : Prisma.sql`created_at`} DESC
+  SELECT    r.id,
+            u.username,
+            r.product_id,
+            p.id,
+            p.NAME,
+            r.rating,
+            r.content,
+            r.created_at,
+            r.updated_at,
+            ri.image_url
+  FROM      reviews r
+  LEFT JOIN review_images ri 
+  ON        r.id = ri.review_id
+  LEFT JOIN users u
+  ON        r.user_id = u.id
+  LEFT JOIN products p
+  ON        r.product_id = p.id
+  WHERE     r.product_id=${id}
+  ORDER BY  ${sort ? Prisma.sql`r.rating` : Prisma.sql`r.created_at`} DESC
   LIMIT     ${limit}
   ${offset ? Prisma.sql`OFFSET ${offset}` : Prisma.empty};
   `;
@@ -68,11 +66,18 @@ const createReviewImg = async (imgUrl, reviewId) => {
   `;
 
   return await prisma.$queryRaw`
-  SELECT 
-  FROM      reviews
-  LEFT JOIN review_images
-  ON        reviews.id = review_images.review_id
-  ORDER BY  reviews.id DESC
+  SELECT    r.id,
+            r.user_id,
+            r.product_id,
+            r.rating,
+            r.content,
+            r.created_at,
+            r.updated_at
+            ri.image_url
+  FROM      reviews r
+  LEFT JOIN review_images ri
+  ON        r.id = ri.review_id
+  ORDER BY  r.id DESC
   LIMIT     1; 
   `;
 };
