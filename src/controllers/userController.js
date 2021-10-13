@@ -57,7 +57,6 @@ const createUser = asyncWrapper(async (req, res) => {
   const CHECK_PATTERN_RANGE = 5;
   checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
   const { token, signupUser } = await userService.createUser({ ...req.body });
-  console.log(signupUser);
   res.cookie('user', token);
   successResMessage(201, res, 'SIGN_UP_SUCCESS', signupUser);
 });
@@ -65,7 +64,6 @@ const createUser = asyncWrapper(async (req, res) => {
 const signInUser = asyncWrapper(async (req, res) => {
   const { username, password } = req.body;
   const user = await userService.signInUser(username, password);
-
   res.cookie('user', user.token);
   res.status(201).json({ message: user.message });
 });
