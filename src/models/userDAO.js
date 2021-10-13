@@ -66,25 +66,21 @@ const createUser = async userInfo => {
     );
   `;
   return await prisma.$queryRaw`
-    SELECT 
-      u.id, 
-      u.real_name, 
-      u.username 
-    FROM 
-      users u 
-    ORDER BY 
-      id 
-    DESC 
-    LIMIT 1;
+  SELECT  u.id,
+          u.real_name,
+          u.username
+  FROM    users u
+  ORDER   BY id DESC
+  LIMIT   1; 
   `;
 };
 
 const checkUserInfoByEmail = async email => {
   const userInfo = await prisma.$queryRaw`
-    SELECT u.id, u.password
-    FROM users u
-    WHERE
-    u.email = ${email}`;
+  SELECT  u.id,
+          u.password
+  FROM    users u
+  WHERE   u.email = ${email}`;
 
   return userInfo;
 };
