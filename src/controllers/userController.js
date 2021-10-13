@@ -10,12 +10,6 @@ const successResMessage = (num, res, message, data) => {
   });
 };
 
-const getAlluser = asyncWrapper(async (req, res) => {
-  const user = await userService.getAllUser();
-  if (!user) errorGenerator(409, 'USERNAME_DOSES_NOT_EXIST');
-  successResMessage(201, res, 'USERNAME_EXIST', user);
-});
-
 const checkUserName = asyncWrapper(async (req, res) => {
   const requiredKeys = ['username'];
   const CHECK_PATTERN_RANGE = 1;
@@ -69,15 +63,14 @@ const createUser = asyncWrapper(async (req, res) => {
 });
 
 const signInUser = asyncWrapper(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userService.signInUser(email, password);
+  const { username, password } = req.body;
+  const user = await userService.signInUser(username, password);
 
   res.cookie('user', user.token);
   res.status(201).json({ message: user.message });
 });
 
 export default {
-  getAlluser,
   checkUserName,
   createUser,
   signInUser,

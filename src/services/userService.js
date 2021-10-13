@@ -1,10 +1,6 @@
 import { userDAO } from '../models';
 import { errorGenerator, bcrypt, jwt } from '../utils';
 
-const getAllUser = async () => {
-  return await userDAO.getAllUser();
-};
-
 const checkUsername = async username => {
   const isValidName = await userDAO.checkUsername(username);
   if (isValidName) errorGenerator(409);
@@ -27,8 +23,9 @@ const createUser = async userInfo => {
   return { token, signupUser };
 };
 
-const signInUser = async (email, password) => {
-  const [userInfo] = await userDAO.checkUserInfoByEmail(email);
+const signInUser = async (username, password) => {
+  const [userInfo] = await userDAO.checkUserInfoByEmail(username);
+
   if (!userInfo) {
     errorGenerator(401, 'EMAIL_IS_NOT_VALID');
   }
@@ -43,7 +40,6 @@ const signInUser = async (email, password) => {
 };
 
 export default {
-  getAllUser,
   checkUsername,
   createUser,
   signInUser,

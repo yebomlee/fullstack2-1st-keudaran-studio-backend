@@ -1,10 +1,5 @@
 import prisma from '../../prisma';
 
-const getAllUser = async () => {
-  return await prisma.$queryRaw`
-  select * from users;`;
-};
-
 const checkUsername = async username => {
   const [user] = await prisma.$queryRaw`
     SELECT  u.id,
@@ -30,7 +25,7 @@ const findLastUser = async () => {
             u.real_name as realName,
             u.username
     FROM    users u
-    ORDER  BY id DESC
+    ORDER   BY id DESC
     LIMIT   1; 
   `;
 };
@@ -76,18 +71,18 @@ const createUser = async userInfo => {
   return findLastUser();
 };
 
-const checkUserInfoByEmail = async email => {
+const checkUserInfoByEmail = async username => {
   const userInfo = await prisma.$queryRaw`
   SELECT  u.id,
+          u.username,
           u.password
   FROM    users u
-  WHERE   u.email = ${email}`;
+  WHERE   u.username = ${username}`;
 
   return userInfo;
 };
 
 export default {
-  getAllUser,
   checkUsername,
   createUser,
   deleteUser,
