@@ -1,4 +1,25 @@
 import prisma from '../../prisma';
+import { Prisma } from '@prisma/client';
+
+const getSortedProducts = async sort => {
+  let query = '';
+  if (sort === 'highprice') query = Prisma.sql`p.price DESC`;
+  if (sort === 'lowprice') query = Prisma.sql`p.price`;
+  if (sort === 'recent') query = Prisma.sql`p.created_at DESC`;
+  if (sort === 'name') query = Prisma.sql`p.name`;
+
+  return await prisma.$queryRaw`
+  SELECT
+    p.id,
+    p.name,
+    p.price,
+    p.thumbnail_url,
+    p.description_image_url,
+    p.created_at
+  FROM products p
+  order by ${query}
+  `;
+};
 
 const getAllProducts = async () => {
   return await prisma.$queryRaw`
@@ -9,7 +30,7 @@ const getAllProducts = async () => {
     p.thumbnail_url,
     p.description_image_url,
     p.created_at
-  FROM products p;
+  FROM products p
   `;
 };
 
@@ -63,6 +84,7 @@ const getProductImages = async productId => {
 };
 
 export default {
+  getSortedProducts,
   getAllProducts,
   getProduct,
   getProductOptions,
