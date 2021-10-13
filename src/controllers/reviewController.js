@@ -6,10 +6,10 @@ const getReviews = asyncWrapper(async (req, res) => {
   if (!id) errorGenerator(400, 'NO_ID_WAS_FOUND');
 
   const reviews = await reviewService.getReviews(id, sort, offset, limit);
+  console.log(reviews);
   res.status(200).json({ message: 'SUCCESS', result: reviews });
 });
 
-export default { getReviews };
 const createReview = asyncWrapper(async (req, res) => {
   const newReview = req.body;
 
@@ -21,4 +21,4 @@ const createReview = asyncWrapper(async (req, res) => {
   res.status(200).json({ message: 'SUCCESS', result: reviews });
 });
 
-export default { createReview };
+export default { getReviews, createReview };
