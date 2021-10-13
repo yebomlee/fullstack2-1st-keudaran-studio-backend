@@ -7,31 +7,10 @@ const getAllProducts = async () => {
   return allProducts;
 };
 
-const lowPricedProducts = async () => {
-  const lowPrice = await productDAO.getAllProducts();
-  if (!lowPrice) errorGenerator(404, 'LOWPRICE_DOES_NOT_EXIST');
-  return lowPrice.sort((a, b) => a.price - b.price);
-}; //오름차순
-
-const highPricedProducts = async () => {
-  const highPrice = await productDAO.getAllProducts();
-  if (!highPrice) errorGenerator(404, 'HIGHPRICE_DOES_NOT_EXIST');
-  return highPrice.sort((a, b) => b.price - a.price);
-}; //내림차순
-
-const namedProducts = async () => {
-  const name = await productDAO.getAllProducts();
-  if (!name) errorGenerator(404, 'NAME_DOES_NOT_EXIST');
-  return name.sort((a, b) => {
-    if (a.name > b.name) return 1;
-    if (a.name < b.name) return -1;
-  });
-}; // 이름순
-
-const datedProducts = async () => {
-  const date = await productDAO.getAllProducts();
-  if (!date) errorGenerator(404, 'DATE_DOES_NOT_EXIST');
-  return date.sort((a, b) => (a.created_at > b.created_at ? -1 : 1));
+const getSortedProducts = async sort => {
+  const sortedProducts = await productDAO.getSortedProducts(sort);
+  if (!sortedProducts) errorGenerator(404, `${sort}_DOES_NOT_EXIST`);
+  return sortedProducts;
 };
 
 const getProductDetail = async productId => {
@@ -54,9 +33,6 @@ const getProductDetail = async productId => {
 
 export default {
   getProductDetail,
+  getSortedProducts,
   getAllProducts,
-  lowPricedProducts,
-  highPricedProducts,
-  namedProducts,
-  datedProducts,
 };

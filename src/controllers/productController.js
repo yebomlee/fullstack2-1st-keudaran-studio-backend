@@ -8,31 +8,12 @@ const getAllProducts = asyncWrapper(async (req, res) => {
   });
 });
 
-const lowPricedProducts = asyncWrapper(async (req, res) => {
-  const lowPrice = await productService.lowPricedProducts();
+const getSortedProducts = asyncWrapper(async (req, res) => {
+  const { sort } = req.query;
+  const product = await productService.getSortedProducts(sort);
   res.status(200).json({
-    lowPrice: lowPrice,
-  });
-});
-
-const highPricedProducts = asyncWrapper(async (req, res) => {
-  const highPrice = await productService.highPricedProducts();
-  res.status(200).json({
-    highPrice: highPrice,
-  });
-});
-
-const namedProducts = asyncWrapper(async (req, res) => {
-  const name = await productService.namedProducts();
-  res.status(200).json({
-    name: name,
-  });
-});
-
-const datedProducts = asyncWrapper(async (req, res) => {
-  const date = await productService.datedProducts();
-  res.status(200).json({
-    date: date,
+    product: product,
+    message: 'success',
   });
 });
 
@@ -45,8 +26,5 @@ const getProductDetail = asyncWrapper(async (req, res) => {
 export default {
   getProductDetail,
   getAllProducts,
-  lowPricedProducts,
-  highPricedProducts,
-  namedProducts,
-  datedProducts,
+  getSortedProducts,
 };
