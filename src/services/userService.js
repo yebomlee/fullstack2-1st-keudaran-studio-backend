@@ -5,10 +5,16 @@ const getAllUser = async () => {
   return await userDAO.getAllUser();
 };
 
-const checkUserName = async userName => {
-  const isUserNameCheck = await userDAO.checkUserName(userName);
-  if (isUserNameCheck) return true;
-  else return false;
+const checkUserName = async username => {
+  const isRealNameCheck = await userDAO.checkUserName(username);
+  if (isRealNameCheck) errorGenerator(409);
+};
+
+const createUser = async userInfo => {
+  const { password } = userInfo;
+  const hashPassword = await bcrypt.encryptPw(password);
+  userInfo.password = hashPassword;
+  return userDAO.createUser(userInfo);
 };
 
 const signInUser = async (email, password) => {
@@ -22,11 +28,11 @@ const signInUser = async (email, password) => {
 
   if (isValidUser) {
     const { id } = userInfo;
-    const token = jwt.issueToken;
+    const token = await jwt.issueToken(id);
     return { message: 'SIGN_IN_SUCCESS', token };
   } else {
     errorGenerator(401, 'PASSWORD_DOES_NOT_MATCH');
   }
 };
 
-export default { getAllUser, signInUser, checkUserName };
+export default { getAllUser, checkUserName, createUser, signInUser };

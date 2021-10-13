@@ -12,3 +12,23 @@ const getReviews = async (id, sort, offset, limit) => {
 };
 
 export default { getReviews };
+const createReview = async newReview => {
+  const { userId, productId, rating, content, imageUrl } = newReview;
+
+  let [createdReview] = await reviewDAO.createReview(
+    userId,
+    productId,
+    rating,
+    content
+  );
+
+  if (imageUrl)
+    [createdReview] = await reviewDAO.createReviewImg(
+      imageUrl,
+      createdReview.id
+    );
+  console.log('wow');
+  return createdReview;
+};
+
+export default { createReview };
