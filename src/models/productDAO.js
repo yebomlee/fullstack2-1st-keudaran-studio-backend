@@ -14,8 +14,11 @@ const getSortedProducts = async sort => {
     p.price,
     p.thumbnail_url as thumbnailUrl,
     p.created_at as createdAt,
-    p.sub_category_id as subCategoryId
+    p.sub_category_id as subCategoryId,
+    sc.main_category_id as mainCategoryId
   FROM products p
+  INNER JOIN sub_categories sc
+  on sc.id=p.sub_category_id
   ORDER BY ${query}
   `;
 };
