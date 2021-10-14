@@ -7,7 +7,6 @@ const getSortedProducts = async sort => {
   if (sort === 'lowprice') query = Prisma.sql`p.price`;
   if (sort === 'recent') query = Prisma.sql`p.created_at DESC`;
   if (sort === 'name') query = Prisma.sql`p.name`;
-  console.log(sort);
   return await prisma.$queryRaw`
   SELECT
     p.id,

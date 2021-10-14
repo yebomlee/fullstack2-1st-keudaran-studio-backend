@@ -10,10 +10,9 @@ const getAllProducts = asyncWrapper(async (req, res) => {
 
 const getSortedProducts = asyncWrapper(async (req, res) => {
   const { sort } = req.query;
-  console.log('controller');
   const product = await productService.getSortedProducts(sort);
   res.status(200).json({
-    product: product,
+    data: product,
     message: 'success',
   });
 });
