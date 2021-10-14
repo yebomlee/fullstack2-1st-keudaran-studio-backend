@@ -19,6 +19,7 @@ const createReview = async newReview => {
       imageUrl,
       createdReview.id
     );
+
   return createdReview;
 };
 

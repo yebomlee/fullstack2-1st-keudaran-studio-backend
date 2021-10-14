@@ -32,7 +32,7 @@ const signInUser = async (username, password) => {
   if (isValidUser) {
     const { id } = userInfo;
     const token = await jwt.issueToken(id);
-    return { message: 'SIGN_IN_SUCCESS', token };
+    return { message: 'SIGN_IN_SUCCESS', token, username };
   } else {
     errorGenerator(401, 'PASSWORD_DOES_NOT_MATCH');
   }
