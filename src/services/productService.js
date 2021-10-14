@@ -26,7 +26,6 @@ const getSortedProducts = async sort => {
     };
     return totalImages;
   });
-  console.log(addImage);
   return addImage;
 };
 
