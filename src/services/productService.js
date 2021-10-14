@@ -10,7 +10,7 @@ const getAllProducts = async () => {
 const getSortedProducts = async sort => {
   const getSortedProducts = await productDAO.getSortedProducts(sort);
   const getHoverImages = await productDAO.getHoverImages();
-  const addImage = getSortedProducts.forEach(product => {
+  const addImage = getSortedProducts.map(product => {
     const { id, name, price, createdAt, subCategoryId, thumbnailUrl } = product;
     const addHoverImage = getHoverImages.filter(
       image => image.productId == product.id
@@ -26,6 +26,7 @@ const getSortedProducts = async sort => {
     };
     return totalImages;
   });
+  console.log(addImage);
   return addImage;
 };
 
