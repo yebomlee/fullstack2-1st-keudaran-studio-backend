@@ -7,7 +7,7 @@ const getSortedProducts = async sort => {
   if (sort === 'lowprice') query = Prisma.sql`p.price`;
   if (sort === 'recent') query = Prisma.sql`p.created_at DESC`;
   if (sort === 'name') query = Prisma.sql`p.name`;
-
+  console.log(sort);
   return await prisma.$queryRaw`
   SELECT
     p.id,
@@ -15,12 +15,15 @@ const getSortedProducts = async sort => {
     p.price,
     p.thumbnail_url as thumbnailUrl,
     p.created_at as createdAt,
-    pi.id,
-    pi.image_url as imageUrl
+    p.sub_category_id as subCategoryId
   FROM products p
-  JOIN product_images pi
-  ON p.id = pi.product_id
-  order by ${query}
+  ORDER BY ${query}
+  `;
+};
+
+const getHoverImages = async () => {
+  return await prisma.$queryRaw`
+  select id, image_url as imageUrl, product_id as productId from product_images
   `;
 };
 
@@ -88,6 +91,7 @@ const getProductImages = async productId => {
 
 export default {
   getSortedProducts,
+  getHoverImages,
   getAllProducts,
   getProduct,
   getProductOptions,
