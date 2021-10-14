@@ -8,9 +8,25 @@ const getAllProducts = async () => {
 };
 
 const getSortedProducts = async sort => {
-  const sortedProducts = await productDAO.getSortedProducts(sort);
-  if (!sortedProducts) errorGenerator(404, `${sort}_DOES_NOT_EXIST`);
-  return sortedProducts;
+  const getSortedProducts = await productDAO.getSortedProducts(sort);
+  const getHoverImages = await productDAO.getHoverImages();
+  const addImage = getSortedProducts.forEach(product => {
+    const { id, name, price, createdAt, subCategoryId, thumbnailUrl } = product;
+    const addHoverImage = getHoverImages.filter(
+      image => image.productId == product.id
+    );
+    let totalImages = {
+      id,
+      name,
+      price,
+      createdAt,
+      subCategoryId,
+      thumbnailUrl,
+      hoverImages: addHoverImage[1].imageUrl,
+    };
+    return totalImages;
+  });
+  return addImage;
 };
 
 const getProductDetail = async productId => {

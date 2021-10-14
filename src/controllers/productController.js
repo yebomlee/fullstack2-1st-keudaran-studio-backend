@@ -12,7 +12,7 @@ const getSortedProducts = asyncWrapper(async (req, res) => {
   const { sort } = req.query;
   const product = await productService.getSortedProducts(sort);
   res.status(200).json({
-    product: product,
+    data: product,
     message: 'success',
   });
 });
