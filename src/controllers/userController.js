@@ -57,7 +57,8 @@ const createUser = asyncWrapper(async (req, res) => {
   const CHECK_PATTERN_RANGE = 5;
   checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
   const { token, signupUser } = await userService.createUser({ ...req.body });
-  res.cookie('user', token);
+  const cookie = { token: token, id: signupUser[0].username };
+  res.cookie('user', cookie);
   successResMessage(201, res, 'SIGN_UP_SUCCESS', signupUser);
 });
 
