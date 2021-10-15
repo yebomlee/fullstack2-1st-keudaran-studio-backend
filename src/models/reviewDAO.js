@@ -6,8 +6,7 @@ const getReviews = async (id, sort, offset, limit = 10) => {
   SELECT    r.id,
             u.username,
             r.product_id,
-            p.id,
-            p.NAME,
+            p.name,
             r.rating,
             r.content,
             r.created_at,
@@ -42,16 +41,25 @@ const createReview = async (userId, productId, rating, content) => {
   `;
 
   return await prisma.$queryRaw`
-  SELECT id,
-         user_id,
-         product_id,
-         rating,
-         content,
-         created_at,
-         updated_at
-  FROM   reviews
-  ORDER  BY id DESC
-  LIMIT  1;  
+  SELECT    r.id,
+            u.username,
+            r.product_id,
+            p.name,
+            r.rating,
+            r.content,
+            r.created_at,
+            r.updated_at,
+            ri.image_url
+  FROM      reviews r
+  LEFT JOIN review_images ri 
+  ON        r.id = ri.review_id
+  LEFT JOIN users u
+  ON        r.user_id = u.id
+  LEFT JOIN products p
+  ON        r.product_id = p.id
+  WHERE     r.product_id=${productId}
+  ORDER BY  r.created_at DESC
+  LIMIT     1
   `;
 };
 
@@ -72,7 +80,7 @@ const createReviewImg = async (imgUrl, reviewId) => {
             r.rating,
             r.content,
             r.created_at,
-            r.updated_at
+            r.updated_at,
             ri.image_url
   FROM      reviews r
   LEFT JOIN review_images ri

@@ -64,7 +64,8 @@ const createUser = asyncWrapper(async (req, res) => {
 const signInUser = asyncWrapper(async (req, res) => {
   const { username, password } = req.body;
   const user = await userService.signInUser(username, password);
-  res.cookie('user', user.token);
+  const cookie = { token: user.token, id: user.username };
+  res.cookie('user', cookie);
   res.status(201).json({ message: user.message });
 });
 
