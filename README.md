@@ -34,41 +34,42 @@
 
 # 🛠스킬
 
-## Frontend
-
-<img src="https://cdn.icon-icons.com/icons2/2415/PNG/128/react_original_logo_icon_146374.png" alt="react" style="width:30px;">
-<img src="https://cdn.icon-icons.com/icons2/649/PNG/128/sign_icon-icons.com_59775.png" alt="routes" style="width:30px;">
-<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_js_official_icon_130509.png" alt="js" style="width:30px;">
-<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_scss_icon_130177.png" alt="sass" style="width:30px;">
-<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_html_icon_130541.png" alt="html" style="width:30px;">
-  <br>
+### Frontend
+<p float="left">
+<img src="https://cdn.icon-icons.com/icons2/2415/PNG/128/react_original_logo_icon_146374.png" alt="react" style="display: inline-block; width:30px; margin-right:5px;">
+<img src="https://cdn.icon-icons.com/icons2/649/PNG/128/sign_icon-icons.com_59775.png" alt="routes" style="display: inline-block; width:30px; margin-right:5px;">
+<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_js_official_icon_130509.png" alt="js" style="display: inline; width:30px; margin-right:5px;">
+<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_scss_icon_130177.png" alt="sass" style="display: inline; width:30px; margin-right:5px;">
+<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_html_icon_130541.png" alt="html" style="display: inline; width:30px; margin-right:5px;">
+</p>
 
 React, React-Router, JS, SASS, HTML
 
 <br>
 
-## Backend
-
-<img src="https://cdn.icon-icons.com/icons2/2699/PNG/128/nodejs_logo_icon_169910.png" alt="node.js" style="width:30px; margin-right:5px;">
-  <img src="https://cdn.icon-icons.com/icons2/2415/PNG/128/express_original_logo_icon_146527.png" alt="node.js" style="width:30px; margin-right:5px;">
-  <img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_nodemon_icon_130299.png" alt="node.js" style="width:30px; margin-right:5px;">
-  <img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_light_prisma_icon_130444.png" alt="node.js" style="width:30px; margin-right:5px;">
-  <img src="https://cdn.icon-icons.com/icons2/2415/PNG/128/mysql_original_wordmark_logo_icon_146417.png" alt="node.js" style="width:30px; margin-right:5px;">
-  <br>
-
-Node.js, Express, Prisma, Nodemon, MySQL <br>
+### Backend
+<p float="left">
+<img src="https://cdn.icon-icons.com/icons2/2699/PNG/128/nodejs_logo_icon_169910.png" alt="node.js" style="display: inline; width:30px; margin-right:5px;">
+  <img src="https://cdn.icon-icons.com/icons2/2415/PNG/128/express_original_logo_icon_146527.png" alt="node.js" style="display: inline; width:30px; margin-right:5px;">
+  <img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_nodemon_icon_130299.png" alt="node.js" style="display: inline; width:30px; margin-right:5px;">
+  <img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_light_prisma_icon_130444.png" alt="node.js" style="display: inline; width:30px; margin-right:5px;">
+  <img src="https://cdn.icon-icons.com/icons2/2415/PNG/128/mysql_original_wordmark_logo_icon_146417.png" alt="node.js" style="display: inline; width:30px; margin-right:5px;">
+    <img src="https://cdn.icon-icons.com/icons2/3053/PNG/128/postman_macos_bigsur_icon_189815.png" alt="node.js" style="display: inline; width:30px; margin-right:5px;">
+  </p>
+ 
+Node.js, Express, Prisma, Nodemon, MySQL, Postman <br>
 Bcrypt, Json Web Token, Cookies, Layered Pattern, Restful-API
 
 <br>
 
-## Co-Working tools
-
-<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_git_icon_130581.png" alt="git" style="width:30px; margin-right:5px;">
-<img src="https://cdn.icon-icons.com/icons2/2389/PNG/128/notion_logo_icon_145025.png" alt="notion" style="width:30px; margin-right:5px;">
-<img src="https://cdn.icon-icons.com/icons2/2108/PNG/128/slack_icon_130829.png" alt="slack" style="width:30px; margin-right:5px;">
-<img src="https://cdn.icon-icons.com/icons2/2429/PNG/128/zoom_logo_icon_147196.png" alt="zoom" style="width:30px; margin-right:5px;">
-  <br>
-
+### Co-Working tools
+<p float="left">
+<img src="https://cdn.icon-icons.com/icons2/2107/PNG/128/file_type_git_icon_130581.png" alt="git" style="display: inline; width:30px; margin-right:5px;">
+<img src="https://cdn.icon-icons.com/icons2/2389/PNG/128/notion_logo_icon_145025.png" alt="notion" style="display: inline; width:30px; margin-right:5px;">
+<img src="https://cdn.icon-icons.com/icons2/2108/PNG/128/slack_icon_130829.png" alt="slack" style="display: inline; width:30px; margin-right:5px;">
+<img src="https://cdn.icon-icons.com/icons2/2429/PNG/128/zoom_logo_icon_147196.png" alt="zoom" style="display: inline; width:30px; margin-right:5px;">
+  </p>
+  
 Git, Notion, Slack, Zoom
 
 <br><br><br>
@@ -81,7 +82,7 @@ Git, Notion, Slack, Zoom
 
 # 📀 DB Modeling
 
-![modeling.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/dc93c7da-45b5-434b-bbad-7303b5288b28/modeling.png)
+<img width="1145" alt="modeling" src="https://user-images.githubusercontent.com/39205612/137620849-a7124364-2aa2-49cd-9c15-16fe3f3eb5b7.png">
 
 - [https://dbdiagram.io/d/61581f9f825b5b01461d8050](https://dbdiagram.io/d/61581f9f825b5b01461d8050)
 
@@ -89,7 +90,7 @@ Git, Notion, Slack, Zoom
 
 # ⚙️ Backend 구현 기능 상세
 
-## 공통구현사항
+### 공통구현사항
 
 1. DB modeling / Database
    - DB diagram 사용하여 데이터베이스 모델링
@@ -117,7 +118,7 @@ Git, Notion, Slack, Zoom
 
 <br>
 
-## User API
+### User API
 
 1. 회원가입 API
 
@@ -141,14 +142,14 @@ Git, Notion, Slack, Zoom
 
 <br>
 
-## Category API
+### Category API
 
 1. 카테고리 정보 조회 API
    - 메인카테고리 및 서브카테고리 데이터 가공하여 조회
 
 <br>
 
-## Product API
+### Product API
 
 1. 디테일 상품정보 조회 API
 
@@ -163,7 +164,7 @@ Git, Notion, Slack, Zoom
 
 <br>
 
-## Review API
+### Review API
 
 1. 리뷰 정보 조회 및 정렬 API
 
