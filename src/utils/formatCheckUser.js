@@ -17,7 +17,8 @@ const CheckFormatColumn = (value, key) => {
       checkPattern.special ||
       checkPattern.korea,
     email:
-      value.substring(value.length - 4, value.length) !== '.com' ||
+      (value.substring(value.length - 4, value.length) !== '.com' &&
+        value.substring(value.length - 6, value.length) !== '.co.kr') ||
       !value.includes('@') ||
       checkPattern.space ||
       checkPattern.korea,
@@ -34,12 +35,7 @@ const CheckFormatColumn = (value, key) => {
       !checkPattern.special ||
       checkPattern.korea ||
       !checkPattern.english,
-    realName:
-      value.length > 4 ||
-      checkPattern.space ||
-      checkPattern.special ||
-      checkPattern.number ||
-      checkPattern.english,
+    realName: checkPattern.space || checkPattern.special || checkPattern.number,
   };
   return !isPatternColumn[key];
 };
