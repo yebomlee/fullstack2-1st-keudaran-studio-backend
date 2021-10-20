@@ -28,7 +28,8 @@ const deleteUser = asyncWrapper(async (req, res) => {
   successResMessage(201, res, 'SUCCESS_DELETE_USER');
 });
 
-const checkPatternReqBody = (req, requiredKeys, CHECK_PATTERN_RANGE) => {
+const checkPatternReqBody = async (req, requiredKeys, CHECK_PATTERN_RANGE) => {
+  console.log('asdasd');
   requiredKeys.forEach((key, index) => {
     const keyUpper = key.toLocaleUpperCase();
     if (!(key in req.body)) {
@@ -55,7 +56,7 @@ const createUser = asyncWrapper(async (req, res) => {
     'isAgreedEmailMarketing',
   ];
   const CHECK_PATTERN_RANGE = 5;
-  checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
+  await checkPatternReqBody(req, requiredKeys, CHECK_PATTERN_RANGE);
   const { token, signupUser } = await userService.createUser({ ...req.body });
   const cookie = { token: token, id: signupUser[0].username };
   res.cookie('user', cookie);

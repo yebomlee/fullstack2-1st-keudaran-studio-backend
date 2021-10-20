@@ -60,7 +60,7 @@ const getProduct = async productId => {
     pi.brand,
     pi.shipping_fee as shippingFee
   FROM        products AS p
-  INNER JOIN  production_informs PI
+  INNER JOIN  production_informs pi
   ON          p.production_inform_id = pi.id
   WHERE       p.id = ${productId}
   `;
