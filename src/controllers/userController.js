@@ -67,7 +67,10 @@ const signInUser = asyncWrapper(async (req, res) => {
   const { username, password } = req.body;
   const user = await userService.signInUser(username, password);
   const cookie = { token: user.token, id: user.username };
-  res.cookie('user', cookie);
+  res.cookie('user', cookie, {
+    expires: new Date(Date.now() + 9999999),
+    httpOnly: false,
+  });
   res.status(201).json({ message: user.message });
 });
 
