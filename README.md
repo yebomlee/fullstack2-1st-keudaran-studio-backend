@@ -72,7 +72,7 @@ Bcrypt, Json Web Token, Cookies, Layered Pattern, Restful-API**
 
 - **로그인 API**
 
-   - 유저 로그인 성공 시, Json Web Token 발행 및 Access Token 쿠키 저장 Main으로 Redirect
+   - 유저 로그인 성공 시, Json Web Token 발행 및 Access Token 쿠키 사용
    - 유저 정보 input 값 불일치 시, Error Message 출력
    - 유저 정보 input 값 없을 시, Error Message 출력
 
